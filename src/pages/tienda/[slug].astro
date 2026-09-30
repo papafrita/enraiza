@@ -1,0 +1,234 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { url } from '../../lib/url';
+import { Picture } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Wave from '../../components/Wave.astro';
+import ModelCard from '../../components/ModelCard.astro';
+import { getModelos, shapes, sizes, soles, modeloHref, type Modelo } from '../../lib/modelos';
+import { site, waLink } from '../../site.config';
+
+export const getStaticPaths = (async () => {
+  const modelos = await getModelos();
+  return modelos.map((modelo) => ({
+    params: { slug: modelo.id },
+    props: { modelo, others: modelos.filter((o) => o.id !== modelo.id) },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  modelo: Modelo;
+  others: Modelo[];
+}
+const { modelo, others } = Astro.props;
+const m = modelo.data;
+
+const whatsappNumber = site.whatsapp.replace(/\D/g, '');
+const defaultMessage = `Hola Enraíza, quiero reservar el modelo ${m.name}, con ${soles[0].label.toLowerCase()}.`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: m.name,
+  description: m.description,
+  category: m.kind,
+  image: new URL(m.image.src, Astro.site).href,
+  url: new URL(modeloHref(modelo), Astro.site).href,
+  brand: { '@type': 'Brand', name: 'Enraíza' },
+  material: 'Cuero',
+};
+---
+
+<Base
+  title={`${m.name} · ${m.kind}`}
+  description={`${m.name}: ${m.description} Calzado respetuoso hecho a mano y a medida en Valdivia.`}
+  ogImage={m.image}
+  jsonLd={jsonLd}
+>
+  <section class="container detail">
+    <a href={url('/tienda/')} class="back">← Volver a la tienda</a>
+    <div class="split" style="--gap:clamp(32px,5vw,72px)">
+      <div class="figure">
+        <div class="deco" aria-hidden="true" style="right:-4%;top:-5%;width:38%;background:var(--orange)"></div>
+        <Picture
+          src={m.image}
+          alt={m.alt}
+          widths={[480, 760]}
+          sizes="(min-width: 1100px) 560px, (min-width: 940px) 45vw, 100vw"
+          formats={['avif', 'webp']}
+          fallbackFormat="jpg"
+          loading="eager"
+          fetchpriority="high"
+          style={`aspect-ratio:1;border-radius:${shapes[m.shape]}`}
+        />
+      </div>
+
+      <div class="info" data-picker data-model={m.name} data-wa={whatsappNumber}>
+        <span class="kicker">{m.kind}</span>
+        <h1>{m.name}</h1>
+        <p class="lead">{m.description}</p>
+        <ul class="features">
+          {m.features.map((f) => <li>{f}</li>)}
+        </ul>
+
+        <div class="group">
+          <div class="group-head">
+            <span class="group-title" id="talla-label">Tu talla</span>
+            <a href={url('/tienda/#guia-tallas')} class="guide-link">Ver guía de tallas</a>
+          </div>
+          <div class="chips" role="group" aria-labelledby="talla-label">
+            {
+              sizes.map((s) => (
+                <button type="button" class="chip" data-size={s.talla} aria-pressed="false">
+                  {s.talla}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="group">
+          <span class="group-title" id="suela-label">Tipo de suela</span>
+          <div class="chips" role="group" aria-labelledby="suela-label">
+            {
+              soles.map((s, i) => (
+                <button type="button" class="chip sole" data-sole={s.label} aria-pressed={i === 0 ? 'true' : 'false'}>
+                  <span class="sole-label">{s.label}</span>
+                  <span class="sole-hint">{s.hint}</span>
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="summary">
+          <span data-summary aria-live="polite">{m.name} · talla por definir · {soles[0].label.toLowerCase()}</span>
+          <a href={waLink(defaultMessage)} target="_blank" rel="noopener" class="btn btn--sage" data-reserve>
+            Reservar por WhatsApp
+          </a>
+          <span class="note">Te confirmamos medidas, cuero disponible y plazo antes de reservar.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Wave variant="pale" />
+  <section class="band--pale">
+    <div class="container others">
+      <h2 class="h2">Otros modelos</h2>
+      <div class="others-grid">
+        {others.map((o) => <ModelCard modelo={o} ratio="4/3" />)}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-picker]').forEach((root) => {
+    const model = root.dataset.model!;
+    const number = root.dataset.wa!;
+    const summary = root.querySelector<HTMLElement>('[data-summary]')!;
+    const reserve = root.querySelector<HTMLAnchorElement>('[data-reserve]')!;
+    const sizeBtns = [...root.querySelectorAll<HTMLButtonElement>('[data-size]')];
+    const soleBtns = [...root.querySelectorAll<HTMLButtonElement>('[data-sole]')];
+
+    let size: string | null = null;
+    let sole = soleBtns[0].dataset.sole!;
+
+    const render = () => {
+      sizeBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.size === size)));
+      soleBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sole === sole)));
+      const soleText = sole.toLowerCase();
+      summary.textContent = `${model} · ${size ? 'talla ' + size : 'talla por definir'} · ${soleText}`;
+      const msg = `Hola Enraíza, quiero reservar el modelo ${model}${size ? ', talla ' + size : ''}, con ${soleText}.`;
+      reserve.href = `https://wa.me/${number}?text=${encodeURIComponent(msg)}`;
+    };
+
+    sizeBtns.forEach((b) => b.addEventListener('click', () => { size = b.dataset.size!; render(); }));
+    soleBtns.forEach((b) => b.addEventListener('click', () => { sole = b.dataset.sole!; render(); }));
+  });
+</script>
+
+<style>
+  .detail {
+    padding-top: clamp(24px, 4vw, 48px);
+    padding-bottom: clamp(48px, 6vw, 72px);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .detail .split { align-items: start; }
+  .back {
+    align-self: flex-start;
+    text-decoration: none;
+    color: var(--sage-dark);
+    font: 600 16px/1 var(--font-body);
+    padding: 10px 14px;
+    border-radius: 999px;
+    transition: background-color var(--ease), color var(--ease);
+  }
+  .back:hover { background: var(--sage-pale); color: var(--ink); }
+
+  .info { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+  .info h1 { font-size: clamp(52px, 7vw, 92px); }
+  .info .lead { font-size: 20px; max-width: 38ch; }
+  .features { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .features li { background: var(--sand); border-radius: 999px; padding: 10px 16px; font-size: 15px; font-weight: 600; }
+
+  .group { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+  .group-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .group-title { font: 400 22px/1.2 var(--font-display); }
+  .guide-link { font: 600 15px/1 var(--font-body); padding: 4px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    cursor: pointer;
+    min-width: 56px;
+    height: 48px;
+    border-radius: 999px;
+    font: 600 16px/1 var(--font-body);
+    border: 2px solid var(--sage);
+    background: transparent;
+    color: var(--ink);
+    transition: background-color var(--ease), color var(--ease), border-color var(--ease);
+  }
+  .chip:hover { border-color: var(--ink); }
+  .chip[aria-pressed='true'] { background: var(--sage); color: var(--cream); }
+  .chip[aria-pressed='true']:hover { border-color: var(--ink); }
+  .sole {
+    height: auto;
+    text-align: left;
+    padding: 14px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sole-label { font: 600 16px/1.2 var(--font-body); }
+  .sole-hint { font: 400 14px/1.35 var(--font-body); }
+
+  .summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    background: var(--sage-pale);
+    border-radius: 40px 40px 40px 12px;
+    padding: 26px;
+    font-size: 16px;
+  }
+  .note { font-size: 14px; color: var(--ink-soft); }
+
+  .others {
+    padding-top: clamp(32px, 5vw, 56px);
+    padding-bottom: clamp(56px, 8vw, 96px);
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .others-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 28px;
+    align-items: start;
+  }
+  .others-grid :global(.model-card) { gap: 14px; }
+</style>

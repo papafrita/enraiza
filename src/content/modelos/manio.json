@@ -1,0 +1,10 @@
+{
+  "name": "Mañío",
+  "kind": "Zapato urbano",
+  "order": 1,
+  "description": "Modelo urbano de líneas simples, diseñado para acompañar largas jornadas.",
+  "features": ["Horma ancha", "Suela flexible", "Cuero natural"],
+  "image": "../../assets/modelos/manio.png",
+  "alt": "Zapatos Mañío de cuero rojo",
+  "shape": "blobA"
+}

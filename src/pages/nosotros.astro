@@ -1,0 +1,86 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import boot from '../assets/boot.jpg';
+
+const values = [
+  { title: 'A medida', text: 'Cada par parte de las medidas de tus pies, no de un molde genérico.', color: 'var(--orange)', bg: 'var(--sage-pale)', offset: '0px', radius: '56px 56px 56px 14px' },
+  { title: 'Hecho a mano', text: 'Confección artesanal en nuestro taller en Valdivia.', color: 'var(--sage)', bg: 'var(--sand)', offset: '40px', radius: '999px 999px 48px 48px' },
+  { title: 'Movimiento natural', text: 'Hormas anchas y suelas flexibles que dejan al pie hacer su trabajo.', color: 'var(--cream)', bg: 'var(--sage-light)', offset: '12px', radius: '56px 14px 56px 56px' },
+];
+---
+
+<Base
+  title="Nuestra esencia"
+  description="Enraíza es una marca valdiviana que crea calzado ergonómico hecho a mano y a medida, diseñado para respetar la forma y función natural de los pies."
+  ogImage={boot}
+>
+  <section class="container split intro" style="--min:400px">
+    <div class="figure intro-figure">
+      <div class="backdrop" aria-hidden="true"></div>
+      <Picture
+        src={boot}
+        alt="Botín negro de cuero sostenido en la mano"
+        widths={[440, 853]}
+        sizes="(min-width: 500px) 440px, 100vw"
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+    <div class="intro-text">
+      <h1 class="h1">Nuestra esencia</h1>
+      <p class="first">
+        Enraíza es una marca valdiviana que crea calzado ergonómico hecho a mano y a medida, diseñado para respetar la
+        forma y función natural de los pies.
+      </p>
+      <p>
+        Cada par se confecciona con dedicación, poniendo énfasis en la comodidad, el movimiento y la conexión con el
+        cuerpo.
+      </p>
+      <p>
+        Creemos que los pies son la base de nuestro bienestar. Por eso diseñamos calzado respetuoso que acompaña el
+        movimiento natural y entrega una experiencia más libre y consciente al caminar.
+      </p>
+    </div>
+  </section>
+
+  <section class="container values">
+    {
+      values.map((v) => (
+        <div class="value offset" style={`--offset:${v.offset};background:${v.bg};border-radius:${v.radius}`}>
+          <span class="dot" style={`background:${v.color}`} aria-hidden="true" />
+          <h2>{v.title}</h2>
+          <p>{v.text}</p>
+        </div>
+      ))
+    }
+  </section>
+</Base>
+
+<style>
+  .intro { padding-block: clamp(40px, 6vw, 80px); }
+  .intro-figure { justify-self: center; width: min(100%, 440px); }
+  .backdrop {
+    position: absolute;
+    inset: 8% -9% -7% 9%;
+    border-radius: 220px 220px 60px 160px;
+    background: var(--sage-light);
+  }
+  .intro-figure :global(img) { aspect-ratio: 4/5; border-radius: 220px 220px 60px 160px; }
+  .intro-text { display: flex; flex-direction: column; gap: 22px; }
+  .intro-text p { font-size: 17px; max-width: 48ch; color: var(--ink-soft); }
+  .intro-text .first { font-size: 20px; max-width: 44ch; color: var(--ink); }
+
+  .values {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 24px;
+    align-items: start;
+  }
+  .value { display: flex; flex-direction: column; gap: 12px; padding: 36px; }
+  .dot { width: 48px; height: 48px; border-radius: 50%; }
+  .value h2 { font-size: 26px; }
+  .value p { font-size: 16px; color: var(--ink-soft); }
+</style>

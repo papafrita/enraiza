@@ -1,0 +1,40 @@
+---
+// Ondas separadoras de las bandas de color.
+interface Props {
+  variant: 'sage' | 'pale' | 'footer';
+  position?: 'top' | 'bottom';
+}
+const { variant, position = 'top' } = Astro.props;
+
+const paths = {
+  sage: {
+    top: 'M0,60 C180,10 360,10 540,45 C720,80 900,90 1080,55 C1260,20 1350,25 1440,40 L1440,90 L0,90 Z',
+    bottom: 'M0,0 L1440,0 L1440,40 C1260,80 1080,85 900,50 C720,15 540,5 360,35 C180,65 90,60 0,45 Z',
+  },
+  pale: {
+    top: 'M0,50 C240,90 420,10 720,30 C1020,50 1200,90 1440,35 L1440,90 L0,90 Z',
+    bottom: 'M0,0 L1440,0 L1440,55 C1200,15 1020,70 720,60 C420,50 240,10 0,40 Z',
+  },
+  footer: {
+    top: 'M0,55 C200,15 380,20 560,50 C760,85 980,80 1180,45 C1300,25 1380,30 1440,40 L1440,90 L0,90 Z',
+    bottom: '',
+  },
+};
+const fills = { sage: 'var(--sage)', pale: 'var(--sage-pale)', footer: 'var(--ink)' };
+---
+
+<svg
+  class:list={['wave', `wave--${position}`, { 'wave--footer': variant === 'footer' }]}
+  viewBox="0 0 1440 90"
+  preserveAspectRatio="none"
+  aria-hidden="true"
+>
+  <path d={paths[variant][position]} fill={fills[variant]}></path>
+</svg>
+
+<style>
+  .wave { display: block; width: 100%; height: clamp(36px, 6vw, 90px); }
+  .wave--top { margin-bottom: -1px; }
+  .wave--bottom { margin-top: -1px; }
+  .wave--footer { height: clamp(40px, 6vw, 90px); margin-top: clamp(56px, 8vw, 96px); }
+</style>

@@ -1,0 +1,196 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Wave from '../components/Wave.astro';
+import Accordion from '../components/Accordion.astro';
+import { igHandle, igLink, waTaller } from '../site.config';
+import koru from '../assets/modelos/koru.png';
+
+const learn = [
+  { title: 'Medidas y horma', text: 'Cómo leer el pie y elegir una horma respetuosa.' },
+  { title: 'Patronaje', text: 'Dibujar y cortar los moldes de tu modelo.' },
+  { title: 'Corte de cuero', text: 'Elegir la piel y cortarla con precisión.' },
+  { title: 'Costura y armado', text: 'Unir las piezas y dar forma a la capellada.' },
+  { title: 'Suela y terminaciones', text: 'Montar la suela y dejar tu par listo para caminar.' },
+];
+const learnRadius = [
+  '48px 48px 48px 14px',
+  '999px 999px 40px 40px',
+  '48px 14px 48px 48px',
+  '40px 40px 999px 999px',
+  '48px 48px 14px 48px',
+];
+
+const includes = [
+  'Materiales: cuero, hilos y suela',
+  'Uso de herramientas y horma',
+  'Acompañamiento en cada etapa',
+  'Tu propio par terminado',
+];
+const indents = ['28px', '8px', '40px', '0px'];
+
+const faqs: [string, string][] = [
+  ['¿Necesito experiencia previa?', 'No. Partimos desde cero y te guiamos en cada paso del proceso.'],
+  ['¿Cuántas personas hay por grupo?', 'Trabajamos con grupos pequeños para acompañar a cada participante de cerca.'],
+  ['¿Qué debo llevar?', 'Solo ganas de aprender y ropa cómoda. Nosotros ponemos materiales y herramientas.'],
+  ['¿Cómo me inscribo?', 'Escríbenos por WhatsApp o Instagram y te enviamos la próxima fecha, valor y forma de reserva.'],
+];
+---
+
+<Base
+  title="Talleres de calzado artesanal"
+  description="Aprende a hacer tu propio calzado en Valdivia: medidas y horma, patronaje, corte de cuero, costura y suela. Grupos pequeños, sin experiencia previa."
+  ogImage={koru}
+>
+  <section class="container split hero" style="--min:400px">
+    <div class="hero-text">
+      <h1 class="h1">Talleres de calzado artesanal</h1>
+      <p class="lead">
+        Aprende el oficio con tus manos. En nuestros talleres en Valdivia recorres el proceso completo y te vas con un
+        par hecho por ti.
+      </p>
+      <a href={waTaller} target="_blank" rel="noopener" class="btn btn--orange">Quiero inscribirme</a>
+    </div>
+    <div class="figure hero-figure">
+      <div class="deco" aria-hidden="true" style="left:-7%;top:-6%;width:44%;background:var(--sage-light)"></div>
+      <Picture
+        src={koru}
+        alt="Botines Korü sobre rocas junto a un río"
+        widths={[480, 765]}
+        sizes="(min-width: 600px) 520px, 100vw"
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+  </section>
+
+  <Wave variant="sage" />
+  <section class="band">
+    <div class="container learn">
+      <h2 class="h2">Qué vas a aprender</h2>
+      <ol>
+        {
+          learn.map((l, i) => (
+            <li
+              class:list={['offset', { 'round-bottom': learnRadius[i].endsWith('999px') }]}
+              style={`--offset:${i % 2 ? '36px' : '0px'};border-radius:${learnRadius[i]}`}
+            >
+              <span class="learn-n">{String(i + 1).padStart(2, '0')}</span>
+              <span class="learn-title">{l.title}</span>
+              <span class="learn-text">{l.text}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+  <Wave variant="sage" position="bottom" />
+
+  <section class="container split includes" style="--min:380px; --gap:clamp(32px,5vw,72px)">
+    <div class="includes-text">
+      <h2 class="h2">Qué incluye</h2>
+      <p class="lead">
+        Trabajamos en grupos pequeños para acompañar a cada persona de cerca. No necesitas experiencia previa.
+      </p>
+    </div>
+    <ul class="checks includes-list">
+      {
+        includes.map((text, i) => (
+          <li class="check-pill indent" style={`--indent:${indents[i]}`}>
+            <span class="check" aria-hidden="true">✓</span>
+            <span>{text}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="container faq">
+    <h2 class="h2">Preguntas sobre los talleres</h2>
+    <Accordion name="faq-talleres" items={faqs} class="faq-list" />
+  </section>
+
+  <!-- PENDIENTE: fechas, duración y valor reales. -->
+  <section class="dates-wrap">
+    <div class="dates">
+      <h2 class="h2">Próximas fechas</h2>
+      <p class="lead">
+        Abrimos grupos pequeños durante el año. Escríbenos para saber la próxima fecha, duración y valor, o síguenos
+        en Instagram para enterarte primero.
+      </p>
+      <div class="btn-row">
+        <a href={waTaller} target="_blank" rel="noopener" class="btn btn--sage btn--sm">Consultar por WhatsApp</a>
+        <a href={igLink} target="_blank" rel="noopener" class="btn btn--outline btn--sm ig">{igHandle}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-block: clamp(40px, 6vw, 80px); }
+  .hero-text { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+  .hero-text .lead { max-width: 42ch; }
+  .hero-figure { justify-self: center; width: min(100%, 520px); }
+  .hero-figure :global(img) { aspect-ratio: 1; border-radius: var(--shape-blob-a); }
+
+  .learn {
+    padding-top: clamp(32px, 5vw, 64px);
+    padding-bottom: clamp(48px, 6vw, 72px);
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+  .learn ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 20px;
+    align-items: start;
+  }
+  .learn li {
+    background: var(--cream);
+    color: var(--ink);
+    padding: 28px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  /* Esquinas inferiores de píldora: más aire para que el texto no toque la curva. */
+  .learn li.round-bottom { padding-bottom: 48px; }
+  .learn-n { font: 400 30px/1 var(--font-display); color: var(--orange-ink); }
+  .learn-title { font: 400 21px/1.15 var(--font-display); }
+  .learn-text { font-size: 15px; color: var(--ink-soft); }
+
+  .includes { padding-top: clamp(48px, 7vw, 88px); align-items: start; }
+  .includes-text { display: flex; flex-direction: column; gap: 20px; }
+  .includes-text .lead { max-width: 40ch; }
+  .includes-list { flex-direction: column; }
+  .includes-list li { background: var(--sage-pale); font-size: 17px; }
+
+  .faq {
+    padding-top: clamp(56px, 8vw, 96px);
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .faq :global(.faq-list) { max-width: 860px; }
+
+  .dates-wrap { padding: clamp(56px, 8vw, 96px) var(--gutter) 0; }
+  .dates {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    background: var(--sage-pale);
+    border-radius: 56px 160px 56px 120px;
+    padding: clamp(36px, 6vw, 72px);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .dates .lead { max-width: 48ch; }
+  .dates .ig:hover { background: var(--cream); }
+</style>

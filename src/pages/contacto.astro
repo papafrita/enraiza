@@ -1,0 +1,316 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Accordion from '../components/Accordion.astro';
+import { site, igHandle, igLink, mailLink, waGeneral } from '../site.config';
+import tallerVisita from '../assets/taller-visita.png';
+
+// PENDIENTE: confirmar dirección, horarios, nombres y email con el cliente.
+const visitInfo = [
+  { icon: 'map-pin', title: 'Taller botánico & escuela de oficio', text: 'Sector Los Pellines / Isla Teja Ribera, Valdivia, Región de Los Ríos.' },
+  { icon: 'clock', title: 'Horarios de prueba (previa cita)', text: 'Martes a viernes: 10:00 a 13:00 / 15:30 a 19:00 hrs. Sábados: mañanas dedicadas a pruebas y retiro de pares.' },
+  { icon: 'users', title: 'Trato directo con los zapateros', text: 'Atención directa con Rodrigo Valenzuela y Camila Soto, fundadores y artesanos de Enraíza.' },
+] as const;
+
+const faqs: [string, string][] = [
+  ['¿Cómo sé cuál es mi talla?', 'Mide tu pie descalzo del talón al dedo más largo y revisa la guía de tallas. Si tienes dudas, te ayudamos por WhatsApp.'],
+  ['¿Cuánto demora mi par?', 'Cada par se hace a mano; te confirmamos el plazo al momento de reservar.'],
+  ['¿Hacen envíos?', 'Sí, coordinamos envío o retiro en Valdivia al confirmar tu pedido.'],
+  ['¿Qué es el calzado respetuoso?', 'Calzado con horma ancha, suela flexible y sin taco, que deja al pie moverse de forma natural.'],
+  ['¿Cómo cuido el cuero?', 'Límpialo con un paño húmedo, déjalo secar a la sombra y nutre el cuero de vez en cuando.'],
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Enraíza',
+  description: 'Calzado respetuoso hecho a mano y a medida, y talleres de confección de calzado artesanal.',
+  url: Astro.site?.href,
+  email: site.email,
+  telephone: '+' + site.whatsapp.replace(/\D/g, ''),
+  sameAs: [igLink],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Isla Teja',
+    addressLocality: 'Valdivia',
+    addressRegion: 'Región de Los Ríos',
+    addressCountry: 'CL',
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: -39.8095, longitude: -73.2505 },
+  openingHoursSpecification: [
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '10:00', closes: '13:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '15:30', closes: '19:00' },
+  ],
+};
+---
+
+<Base
+  title="Contacto y visitas al taller"
+  description="Visítanos en nuestro taller en Isla Teja, Valdivia, para medir tus pies y probar calces. Encargos a medida por WhatsApp e Instagram."
+  ogImage={tallerVisita}
+  jsonLd={jsonLd}
+>
+  <section class="container split visits" style="--gap:clamp(40px,6vw,72px)">
+    <div class="visits-text">
+      <span class="kicker">Encuentro en Valdivia</span>
+      <h1>Visitas al taller &amp; asesoría presencial</h1>
+      <p class="lead">
+        Si estás o visitas el sur, te recibimos en nuestro taller ribereño para medir tus pies personalmente, probar
+        calces en movimiento y compartir una infusión de hierbas locales mientras conversamos sobre tus pies.
+      </p>
+      <ul class="visit-info">
+        {
+          visitInfo.map((v) => (
+            <li>
+              <span class="visit-icon">
+                <Icon name={v.icon} size={22} color="var(--sage-dark)" />
+              </span>
+              <div>
+                <h2>{v.title}</h2>
+                <p>{v.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="pills">
+        <a href={igLink} target="_blank" rel="noopener" class="pill">
+          <Icon name="instagram" size={18} color="var(--ink)" strokeWidth={2.5} />{igHandle}
+        </a>
+        <a href={mailLink} class="pill">
+          <Icon name="mail" size={18} color="var(--ink)" strokeWidth={2.5} />{site.email}
+        </a>
+      </div>
+    </div>
+
+    <div class="visual">
+      <div class="figure">
+        <div class="deco" aria-hidden="true" style="right:-6%;top:-6%;width:34%;background:var(--orange)"></div>
+        <Picture
+          src={tallerVisita}
+          alt="Artesana cosiendo un zapato en el taller"
+          widths={[330]}
+          sizes="(min-width: 940px) 560px, 100vw"
+          formats={['avif', 'webp']}
+          fallbackFormat="jpg"
+        />
+        <span class="badge badge--photo">
+          <Icon name="leaf" size={16} color="var(--sage-dark)" />Espacio libre de químicos nocivos
+        </span>
+      </div>
+      <div class="map">
+        <iframe
+          title="Mapa: Isla Teja, Valdivia"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-73.300%2C-39.840%2C-73.200%2C-39.785&layer=mapnik&marker=-39.8095%2C-73.2505"
+          loading="lazy"></iframe>
+        <span class="badge badge--map">
+          <Icon name="map-pin" size={16} color="var(--orange-ink)" />Valdivia · Isla Teja
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section class="container orders">
+    <form class="order-form" data-wa-form data-wa={site.whatsapp.replace(/\D/g, '')}>
+      <h2>Encargos a medida &amp; contacto</h2>
+      <label>
+        Tu nombre
+        <input name="nombre" required autocomplete="name" />
+      </label>
+      <label>
+        Email
+        <input name="email" type="email" autocomplete="email" />
+      </label>
+      <label>
+        Detalles de tu encargo
+        <textarea name="detalle" rows="4" placeholder="Modelo, talla aproximada, color de cuero…"></textarea>
+      </label>
+      <button type="submit" class="btn btn--orange">Solicitar presupuesto</button>
+      <span class="form-note">Se abrirá WhatsApp con tu mensaje listo para enviar.</span>
+    </form>
+
+    <div class="cards">
+      <a href={waGeneral} target="_blank" rel="noopener" class="card card--wa">
+        <span class="card-label"><Icon name="whatsapp" size={28} color="var(--cream)" />WhatsApp</span>
+        <span class="card-title">Escríbenos directo</span>
+        <span class="card-text">La forma más rápida de reservar tu par.</span>
+      </a>
+      <a href={igLink} target="_blank" rel="noopener" class="card card--ig">
+        <span class="card-label"><Icon name="instagram" size={26} color="var(--ink)" strokeWidth={2} />Instagram</span>
+        <span class="card-title">{igHandle}</span>
+        <span class="card-text">Nuevos modelos, fechas de talleres y el día a día del taller.</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="container split faq" style="--min:360px; --gap:clamp(32px,5vw,72px)">
+    <h2 class="h2 faq-title">
+      <Icon name="circle-help" size={40} color="var(--orange)" />Preguntas frecuentes
+    </h2>
+    <Accordion name="faq-contacto" items={faqs} />
+  </section>
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-wa-form]').forEach((form) => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const f = new FormData(form);
+      const nombre = String(f.get('nombre') ?? '').trim();
+      const email = String(f.get('email') ?? '').trim();
+      const detalle = String(f.get('detalle') ?? '').trim();
+      const text = `Hola Enraíza, soy ${nombre}${email ? ` (${email})` : ''}. Quisiera solicitar un presupuesto: ${detalle}`;
+      window.open(`https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+    });
+  });
+</script>
+
+<style>
+  .visits { padding-top: clamp(40px, 6vw, 80px); align-items: start; }
+  .visits-text { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+  .visits-text h1 { font-size: clamp(40px, 5.4vw, 68px); }
+  .visits-text .lead { max-width: 46ch; }
+  .visit-info {
+    list-style: none;
+    margin: 0;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    background: var(--sand);
+    border-radius: 48px 48px 48px 16px;
+    width: 100%;
+  }
+  .visit-info li { display: flex; gap: 16px; align-items: flex-start; }
+  .visit-info div { display: flex; flex-direction: column; gap: 4px; }
+  .visit-info h2 { font-size: 21px; }
+  .visit-info p { font-size: 16px; color: var(--ink-soft); }
+  .visit-icon {
+    flex: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--cream);
+    display: grid;
+    place-items: center;
+  }
+  .pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--sage-pale);
+    color: var(--ink);
+    font: 600 15px/1 var(--font-body);
+    padding: 12px 18px;
+    border-radius: 999px;
+    transition: background-color var(--ease);
+  }
+  .pill:hover { background: var(--sage-light); color: var(--ink); }
+
+  .visual { display: flex; flex-direction: column; gap: 20px; }
+  .visual .figure :global(img) { aspect-ratio: 4/3; border-radius: 180px 180px 48px 48px; }
+  .badge {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--cream);
+    color: var(--ink);
+    font: 600 14px/1 var(--font-body);
+    padding: 10px 16px;
+    border-radius: 999px;
+  }
+  .badge--photo { left: 5%; top: 8%; }
+  .badge--map {
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(31, 58, 49, 0.18);
+  }
+  .map {
+    position: relative;
+    border-radius: 48px 48px 120px 48px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    min-height: 220px;
+    background: var(--sage-pale);
+  }
+  .map iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    filter: saturate(0.75) sepia(0.12);
+  }
+
+  .orders {
+    padding-top: clamp(56px, 8vw, 96px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+    gap: 24px;
+    align-items: stretch;
+  }
+  .order-form {
+    background: var(--sage);
+    color: var(--cream);
+    border-radius: 56px 140px 56px 56px;
+    padding: clamp(28px, 4vw, 48px);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .order-form h2 { font-size: clamp(30px, 3.4vw, 42px); color: var(--cream); margin-bottom: 6px; }
+  label { display: flex; flex-direction: column; gap: 6px; font: 600 14px/1.2 var(--font-body); }
+  input,
+  textarea {
+    font: 400 16px/1.2 var(--font-body);
+    color: var(--ink);
+    background: var(--cream);
+    border: 2px solid transparent;
+    border-radius: 999px;
+    padding: 14px 20px;
+    outline: none;
+    transition: border-color var(--ease);
+  }
+  textarea { line-height: 1.45; border-radius: 28px; resize: vertical; }
+  input:focus,
+  textarea:focus { border-color: var(--orange); }
+  .order-form button { align-self: flex-start; margin-top: 4px; }
+  .order-form button:hover { background: var(--orange-soft); }
+  .form-note { font-size: 14px; }
+
+  .cards { display: flex; flex-direction: column; gap: 24px; }
+  .card {
+    flex: 1;
+    text-decoration: none;
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 200px;
+    transition: background-color var(--ease);
+  }
+  .card--wa { background: var(--ink); color: var(--cream); border-radius: 64px 40px 64px 40px; }
+  .card--wa:hover { background: var(--ink-hover); color: var(--cream); }
+  .card--ig { background: var(--orange); color: var(--ink); border-radius: 40px 64px 40px 64px; }
+  .card--ig:hover { background: var(--orange-hover); color: var(--ink); }
+  .card-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font: 600 13px/1 var(--font-body);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .card-title { font: 400 30px/1.15 var(--font-display); margin-top: auto; }
+  .card-text { font-size: 16px; }
+
+  .faq { padding-top: clamp(56px, 8vw, 96px); align-items: start; }
+  .faq-title { display: flex; align-items: center; gap: 16px; }
+  .faq-title :global(svg) { flex: none; }
+</style>

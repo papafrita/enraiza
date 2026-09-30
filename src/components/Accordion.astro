@@ -1,0 +1,24 @@
+---
+// Acordeón nativo: los <details> comparten `name`, así el navegador mantiene uno abierto a la vez.
+interface Props {
+  name: string;
+  items: [q: string, a: string][];
+  openFirst?: boolean;
+  class?: string;
+}
+const { name, items, openFirst = true, class: className } = Astro.props;
+---
+
+<div class:list={['accordion', className]}>
+  {
+    items.map(([q, a], i) => (
+      <details name={name} open={openFirst && i === 0}>
+        <summary>
+          <span>{q}</span>
+          <span class="toggle" aria-hidden="true" />
+        </summary>
+        <p>{a}</p>
+      </details>
+    ))
+  }
+</div>

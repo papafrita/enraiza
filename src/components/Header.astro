@@ -1,0 +1,90 @@
+---
+import { Image } from 'astro:assets';
+import { url } from '../lib/url';
+import mark from '../assets/mark.png';
+import wordmark from '../assets/wordmark.png';
+
+const nav = [
+  { href: url('/'), label: 'Inicio' },
+  { href: url('/tienda/'), label: 'Tienda' },
+  { href: url('/talleres/'), label: 'Talleres' },
+  { href: url('/nosotros/'), label: 'Nosotros' },
+  { href: url('/contacto/'), label: 'Contacto' },
+];
+const path = Astro.url.pathname;
+// En la ficha de modelo (/tienda/<slug>/) queda activo "Tienda".
+const home = url('/');
+const isActive = (href: string) => (href === home ? path === home : path.startsWith(href));
+---
+
+<header class="site-header">
+  <nav class="container" aria-label="Principal">
+    <a href={home} class="logo" aria-label="Enraíza, inicio">
+      <Image src={mark} alt="" height={40} densities={[1, 2]} loading="eager" />
+      <Image src={wordmark} alt="Enraíza" height={26} densities={[1, 2]} loading="eager" />
+    </a>
+    <ul>
+      {
+        nav.map((n) => (
+          <li>
+            <a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}>
+              {n.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(255, 247, 228, 0.94);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  nav {
+    padding-block: 16px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+  }
+  .logo {
+    text-decoration: none;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  /* Los PNG tienen fondo crema: multiply los funde con el fondo. */
+  .logo img { width: auto; mix-blend-mode: multiply; }
+  .logo img:first-child { height: 40px; }
+  .logo img:last-child { height: 26px; }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 6px;
+    align-items: center;
+  }
+  ul a {
+    display: block;
+    text-decoration: none;
+    font: 600 15px/1 var(--font-body);
+    padding: 11px 17px;
+    border-radius: 999px;
+    color: var(--ink);
+    transition: background-color var(--ease);
+  }
+  ul a:hover,
+  ul a[aria-current='page'] {
+    background: var(--sage-light);
+    color: var(--ink);
+  }
+</style>

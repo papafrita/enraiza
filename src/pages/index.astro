@@ -1,0 +1,242 @@
+---
+import { Picture } from 'astro:assets';
+import { url } from '../lib/url';
+import Base from '../layouts/Base.astro';
+import Wave from '../components/Wave.astro';
+import ModelCard from '../components/ModelCard.astro';
+import { getModelos } from '../lib/modelos';
+import { site } from '../site.config';
+import foot from '../assets/foot.png';
+import boot from '../assets/boot.jpg';
+
+const modelos = await getModelos();
+
+const indents = ['0px', '28px', '8px', '40px', '0px', '20px'];
+const benefits = [
+  'Permite que los dedos se expandan naturalmente.',
+  'Favorece una postura más alineada.',
+  'Ayuda a fortalecer músculos y movilidad del pie.',
+  'Promueve un caminar más estable y consciente.',
+  'Aumenta la percepción del terreno y el equilibrio.',
+  'Comodidad sin restringir el movimiento.',
+];
+
+// PENDIENTE: textos de ejemplo — reemplazar por testimonios reales.
+const testimonials = [
+  { quote: 'Por primera vez mis dedos tienen espacio. Camino todo el día sin cansarme.', who: 'Camila · Valdivia', bg: 'var(--sage-pale)', offset: '0px', radius: '48px 48px 48px 10px' },
+  { quote: 'El taller fue precioso: salí con mis propios zapatos y entendiendo cómo se hacen.', who: 'Tomás · Participante de taller', bg: 'var(--sand)', offset: '48px', radius: '48px 48px 10px 48px' },
+  { quote: 'Se nota el cuidado en cada costura. Me ayudaron con la talla por WhatsApp.', who: 'Valentina · Puerto Montt', bg: 'var(--sage-light)', offset: '16px', radius: '10px 48px 48px 48px' },
+];
+---
+
+<Base
+  title="Enraíza"
+  description="Calzado respetuoso y barefoot hecho a mano y a medida en Valdivia, Chile. Conoce nuestros modelos y aprende a hacer tu propio calzado en nuestros talleres."
+>
+  <section class="container split hero">
+    <div class="hero-text">
+      <span class="kicker">Hecho a mano en Valdivia</span>
+      <h1>Volver al movimiento natural comienza desde los pies.</h1>
+      <div class="btn-row">
+        <a href={url('/tienda/')} class="btn btn--orange">Ver modelos</a>
+        <a href={url('/talleres/')} class="btn btn--outline">Conoce los talleres</a>
+      </div>
+    </div>
+    <div class="figure hero-figure">
+      <div class="blob-orange" aria-hidden="true"></div>
+      <div class="deco hero-dot" aria-hidden="true"></div>
+      <Picture
+        src={foot}
+        alt="Pie descalzo caminando sobre piedras con el símbolo de Enraíza"
+        widths={[400, 545]}
+        sizes="(min-width: 600px) 520px, 100vw"
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div class="seal">100% a medida</div>
+    </div>
+  </section>
+
+  <Wave variant="sage" />
+  <section class="band">
+    <div class="container split why" style="--min:380px; --gap:clamp(32px,5vw,80px)">
+      <div class="why-text">
+        <h2 class="h2">¿Por qué elegir calzado respetuoso?</h2>
+        <p>
+          Los pies están diseñados para moverse, expandirse y adaptarse al terreno. Muchos zapatos tradicionales
+          alteran esa función con hormas estrechas, suelas rígidas o tacos elevados.
+        </p>
+      </div>
+      <ul class="checks why-list">
+        {
+          benefits.map((text, i) => (
+            <li
+              class="check-pill indent"
+              style={`--indent:${indents[i]};background:${i % 2 ? 'var(--sage-pale)' : 'var(--cream)'}`}
+            >
+              <span class="check" aria-hidden="true">✓</span>
+              <span>{text}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+  <Wave variant="sage" position="bottom" />
+
+  <section class="container models">
+    <div class="models-head">
+      <h2 class="h2">Nuestros modelos</h2>
+      <a href={url('/tienda/')} class="btn btn--outline btn--sm">Ver tienda completa →</a>
+    </div>
+    <div class="models-grid">
+      {modelos.map((m, i) => <ModelCard modelo={m} offset={i % 2 ? '56px' : '0px'} />)}
+    </div>
+  </section>
+
+  <section class="teaser-wrap">
+    <div class="teaser">
+      <div class="deco teaser-dot" aria-hidden="true"></div>
+      <div class="teaser-text">
+        <h2 class="h2">Aprende a hacer tu propio calzado</h2>
+        <p>Talleres de confección artesanal: desde la toma de medidas hasta el último punto de costura.</p>
+        <a href={url('/talleres/')} class="btn btn--dark">Ver talleres</a>
+      </div>
+      <Picture
+        src={boot}
+        alt="Botín negro de cuero hecho a mano"
+        widths={[340, 680]}
+        sizes="340px"
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+        class="teaser-img"
+      />
+    </div>
+  </section>
+
+  {
+    site.showTestimonials && (
+      <section class="container testimonials">
+        <h2 class="h2">Lo que dicen quienes caminan con Enraíza</h2>
+        <div class="testimonial-grid">
+          {testimonials.map((t) => (
+            <figure class="offset" style={`--offset:${t.offset};background:${t.bg};border-radius:${t.radius}`}>
+              <span class="quote-mark" aria-hidden="true">
+                “
+              </span>
+              <blockquote>{t.quote}</blockquote>
+              <figcaption>{t.who}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    padding-top: clamp(32px, 6vw, 80px);
+    padding-bottom: clamp(40px, 6vw, 72px);
+  }
+  .hero-text { display: flex; flex-direction: column; gap: 28px; align-items: flex-start; }
+  .hero h1 { font-size: clamp(44px, 6.4vw, 84px); }
+  .hero-figure { justify-self: center; width: min(100%, 520px); }
+  .hero-figure :global(img) { aspect-ratio: 4/5; border-radius: 260px 260px 60px 180px; }
+  .blob-orange {
+    position: absolute;
+    right: -8%;
+    top: -7%;
+    width: 62%;
+    aspect-ratio: 1;
+    border-radius: var(--shape-blob-a);
+    background: var(--orange);
+  }
+  .hero-dot { left: -10%; bottom: -6%; width: 40%; background: var(--sage-light); }
+  .seal {
+    position: absolute;
+    left: -4%;
+    top: 14%;
+    width: clamp(104px, 11vw, 132px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--cream);
+    display: grid;
+    place-items: center;
+    text-align: center;
+    transform: rotate(-10deg);
+    padding: 14px;
+    font: 400 17px/1.1 var(--font-display);
+  }
+
+  /* Por qué */
+  .why { padding-block: clamp(32px, 5vw, 64px); }
+  .why-text { display: flex; flex-direction: column; gap: 24px; }
+  .why-text p { font-size: 19px; max-width: 40ch; }
+  .why-list { flex-wrap: wrap; }
+  .why-list li { color: var(--ink); padding-right: 22px; gap: 12px; font-size: 16px; line-height: 1.35; }
+
+  /* Modelos */
+  .models { padding-block: clamp(48px, 7vw, 96px); }
+  .models-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+  .models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: 32px 28px;
+    align-items: start;
+  }
+
+  /* Talleres teaser */
+  .teaser-wrap { padding: clamp(24px, 4vw, 48px) var(--gutter) 0; }
+  .teaser {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    background: var(--orange);
+    border-radius: 140px 56px 160px 64px;
+    padding: clamp(40px, 6vw, 80px) clamp(32px, 6vw, 96px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 40px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .teaser-dot { right: -6%; bottom: -30%; width: 46%; background: var(--orange-soft); }
+  .teaser-text { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; position: relative; }
+  .teaser-text p { font-size: 19px; max-width: 40ch; }
+  .teaser :global(.teaser-img) {
+    position: relative;
+    justify-self: center;
+    width: min(100%, 340px);
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 56% 44% 48% 52% / 52% 48% 52% 48%;
+    border: 10px solid var(--cream);
+    transform: rotate(4deg);
+  }
+
+  /* Testimonios */
+  .testimonials { padding-top: clamp(56px, 8vw, 112px); }
+  .testimonials h2 { margin-bottom: 48px; max-width: 18ch; }
+  .testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 24px;
+    align-items: start;
+  }
+  figure { margin: 0; padding: 36px; display: flex; flex-direction: column; gap: 16px; }
+  .quote-mark { font: 400 64px/0.6 var(--font-display); color: var(--orange); height: 28px; }
+  blockquote { margin: 0; font-size: 19px; line-height: 1.5; }
+  figcaption { font: 600 15px/1.3 var(--font-body); color: var(--ink-soft); }
+</style>

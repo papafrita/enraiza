@@ -1,0 +1,10 @@
+{
+  "name": "Chilca",
+  "kind": "Zapato con cordones",
+  "order": 3,
+  "description": "Diseño liviano con cordones, adaptable para el día a día.",
+  "features": ["Liviano", "Cordones", "Horma ancha"],
+  "image": "../../assets/modelos/chilca.png",
+  "alt": "Zapatos Chilca de cuero café",
+  "shape": "blobB"
+}

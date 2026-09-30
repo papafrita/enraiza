@@ -35,3 +35,6 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Diseño de referencia (Claude Design) — se mantiene fuera del repo público
+design_handoff_enraiza_web/

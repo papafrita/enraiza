@@ -1,0 +1,10 @@
+{
+  "name": "Korü",
+  "kind": "Botín caña media",
+  "order": 4,
+  "description": "Botín ergonómico de caña media, con ajuste de cordones para la comodidad diaria.",
+  "features": ["Caña media", "Cordones", "Drop cero"],
+  "image": "../../assets/modelos/koru.png",
+  "alt": "Botines Korü negros sobre rocas",
+  "shape": "leaf"
+}

@@ -1,0 +1,335 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Wave from '../../components/Wave.astro';
+import Icon from '../../components/Icon.astro';
+import { getModelos, shapes, sizes, modeloHref } from '../../lib/modelos';
+import { waLink } from '../../site.config';
+import medirPie from '../../assets/medir-pie.png';
+import manio from '../../assets/modelos/manio.png';
+
+const modelos = await getModelos();
+
+const steps = [
+  { title: 'Medimos', text: 'Revisamos medidas y características de tus pies.' },
+  { title: 'Eliges', text: 'Escoges modelo y tipo de suela.' },
+  { title: 'Fabricamos', text: 'Hacemos tu calzado de manera artesanal.' },
+  { title: 'Recibes', text: 'Un par hecho especialmente para ti.' },
+];
+const stepShapes = ['50%', shapes.blobA, '50%', shapes.blobB];
+
+const measure = [
+  'Pon una hoja en el suelo junto a una pared y apoya el talón contra ella, de pie y con tu peso.',
+  'Marca la punta del dedo más largo y el contorno del pie.',
+  'Mide del talón a la marca en centímetros y busca tu talla en la tabla.',
+];
+const sizeCols = [sizes.slice(0, 6), sizes.slice(6)];
+---
+
+<Base
+  title="Tienda"
+  description="Modelos de calzado respetuoso hechos a mano y a medida en Valdivia: Mañío, Tepa, Chilca y Korü. Guía para medir tu pie y tabla de tallas."
+  ogImage={manio}
+>
+  <section class="container intro">
+    <div class="intro-blob" aria-hidden="true"></div>
+    <h1 class="h1">Tienda</h1>
+    <p class="lead">
+      Cada par se hace a mano y a medida. Elige tu modelo y escríbenos: te ayudamos con la talla, el cuero y el tipo
+      de suela.
+    </p>
+  </section>
+
+  <section class="container listing">
+    {
+      modelos.map((m, i) => (
+        <article class="split" style="--min:380px; --gap:clamp(32px,5vw,72px)">
+          <div class:list={['figure', { 'figure--right': i % 2 }]}>
+            <div
+              class="deco"
+              aria-hidden="true"
+              style={`left:-5%;top:-7%;width:34%;background:${i % 2 ? 'var(--sage-light)' : 'var(--orange)'}`}
+            />
+            <Picture
+              src={m.data.image}
+              alt={m.data.alt}
+              widths={[480, 760]}
+              sizes="(min-width: 1100px) 560px, (min-width: 820px) 45vw, 100vw"
+              formats={['avif', 'webp']}
+              fallbackFormat="jpg"
+              style={`aspect-ratio:4/3;border-radius:${shapes[m.data.shape]}`}
+            />
+          </div>
+          <div class="model-text">
+            <span class="kicker">{m.data.kind}</span>
+            <h2>{m.data.name}</h2>
+            <p class="lead">{m.data.description}</p>
+            <div class="btn-row">
+              <a href={modeloHref(m)} class="btn btn--orange btn--sm">
+                Ver modelo
+              </a>
+              <a
+                href={waLink(`Hola Enraíza, me interesa el modelo ${m.data.name}. ¿Me pueden ayudar con la talla?`)}
+                target="_blank"
+                rel="noopener"
+                class="btn btn--outline btn--sm"
+              >
+                Consultar por WhatsApp
+              </a>
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  <Wave variant="pale" />
+  <section class="band--pale">
+    <div class="container process">
+      <h2 class="h2">Nuestro proceso</h2>
+      <ol>
+        {
+          steps.map((s, i) => (
+            <li class="offset" style={`--offset:${i % 2 ? '44px' : '0px'}`}>
+              <span
+                class="step-n"
+                style={`border-radius:${stepShapes[i]};background:${i % 2 ? 'var(--sage-light)' : 'var(--orange)'}`}
+              >
+                {i + 1}
+              </span>
+              <span class="step-title">{s.title}</span>
+              <span class="step-text">{s.text}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+  <Wave variant="pale" position="bottom" />
+
+  <section id="guia-tallas" class="container split guide">
+    <div class="guide-text">
+      <span class="kicker"><Icon name="footprints" size={16} color="var(--sage-dark)" />Fisiología natural del pie</span>
+      <h2>Aprende a medir tu pie y encuentra tu <span class="accent">talla anatómica</span> perfecta.</h2>
+      <p class="lead">
+        El calzado convencional oprime los dedos forzando una forma en punta. En Enraíza trabajamos sobre hormas
+        barefoot: puntera ancha que respeta la expansión natural de tus dedos y <em>drop cero</em> real.
+      </p>
+      <div class="callout">
+        <span class="callout-icon"><Icon name="ruler" size={26} color="var(--orange-ink)" /></span>
+        <div>
+          <h3>¿Por qué tu talla comercial no coincide?</h3>
+          <p>
+            Las marcas industriales miden el zapato por fuera o restringen el empeine. Nosotros medimos la huella viva
+            bajo carga y añadimos <strong>8 a 12 mm de holgura funcional</strong> para permitir la marcha natural sin compresión.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="figure guide-figure">
+      <div class="deco" aria-hidden="true" style="right:-7%;bottom:-7%;width:48%;background:var(--orange)"></div>
+      <Picture
+        src={medirPie}
+        alt="Artesano marcando el contorno de una plantilla sobre cuero"
+        widths={[414]}
+        sizes="(min-width: 540px) 500px, 100vw"
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+      />
+      <div class="tag">
+        <span>Taller Enraíza</span>
+        <span>Horma 100% viva</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="container split size-table" style="--min:380px; --gap:clamp(32px,5vw,72px)">
+    <div class="measure">
+      <h2>Mídelo en casa</h2>
+      <ol>
+        {
+          measure.map((text, i) => (
+            <li>
+              <span class="measure-n">{i + 1}</span>
+              <span>{text}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <p>¿Estás entre dos medidas? Escríbenos: como hacemos cada par a medida, lo ajustamos a tu pie.</p>
+    </div>
+    <div class="table-box">
+      {
+        sizeCols.map((rows) => (
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Cm</th>
+                <th scope="col">Talla</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr>
+                  <td>{r.cm}</td>
+                  <td>{r.talla}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    padding-top: clamp(40px, 6vw, 80px);
+    padding-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+  }
+  .intro-blob {
+    position: absolute;
+    right: clamp(20px, 6vw, 80px);
+    top: clamp(24px, 4vw, 56px);
+    width: clamp(90px, 12vw, 160px);
+    aspect-ratio: 1;
+    border-radius: var(--shape-blob-a);
+    background: var(--sage-light);
+  }
+  .intro h1, .intro p { position: relative; }
+  .intro p { max-width: 52ch; }
+
+  .listing {
+    padding-top: 32px;
+    padding-bottom: clamp(56px, 8vw, 96px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(56px, 8vw, 96px);
+  }
+  /* Alterna imagen izq/der solo cuando hay 2 columnas (≥ ~880px). */
+  @media (min-width: 880px) {
+    .figure--right { order: 2; }
+  }
+  .model-text { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; }
+  .model-text h2 { font-size: clamp(44px, 5vw, 68px); }
+  .model-text p { max-width: 38ch; }
+  .model-text .btn-row { gap: 10px; margin-top: 6px; }
+
+  .process {
+    padding-top: clamp(32px, 5vw, 64px);
+    padding-bottom: clamp(48px, 6vw, 72px);
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+  .process ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 32px 24px;
+    align-items: start;
+  }
+  .process li { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .step-n {
+    width: 88px;
+    height: 88px;
+    display: grid;
+    place-items: center;
+    font: 400 38px/1 var(--font-display);
+    color: var(--ink);
+  }
+  .step-title { font: 400 24px/1.15 var(--font-display); }
+  .step-text { font-size: 16px; color: var(--ink-soft); max-width: 26ch; }
+
+  .guide { padding-top: clamp(48px, 7vw, 96px); }
+  .guide-text { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+  .guide-text h2 { font-size: clamp(36px, 4.6vw, 60px); }
+  .guide-text .lead { max-width: 44ch; }
+  .callout {
+    background: var(--sand);
+    border-radius: 48px 48px 48px 16px;
+    padding: 28px 32px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    max-width: 560px;
+  }
+  .callout-icon {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--cream);
+    display: grid;
+    place-items: center;
+  }
+  .callout div { display: flex; flex-direction: column; gap: 8px; }
+  .callout h3 { font-size: 22px; }
+  .callout p { font-size: 16px; color: var(--ink-soft); }
+  .callout strong { color: var(--orange-ink); }
+  .guide-figure { justify-self: center; width: min(100%, 500px); }
+  .guide-figure :global(img) { aspect-ratio: 4/5; border-radius: 44% 56% 40px 40px / 34% 34% 40px 40px; }
+  .tag {
+    position: absolute;
+    left: 6%;
+    bottom: 6%;
+    background: var(--cream);
+    border-radius: 999px;
+    padding: 12px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .tag span:first-child {
+    font: 600 12px/1 var(--font-body);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage-dark);
+  }
+  .tag span:last-child { font: 400 18px/1.2 var(--font-display); }
+
+  .size-table { padding-top: clamp(56px, 8vw, 96px); align-items: start; }
+  .measure { display: flex; flex-direction: column; gap: 28px; }
+  .measure h2 { font-size: clamp(32px, 3.8vw, 48px); }
+  .measure ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+  .measure li { display: flex; gap: 16px; align-items: flex-start; }
+  .measure li span:last-child { padding-top: 9px; max-width: 40ch; }
+  .measure-n {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--sage-light);
+    display: grid;
+    place-items: center;
+    font: 400 20px/1 var(--font-display);
+  }
+  .measure > p { font-size: 16px; max-width: 42ch; color: var(--ink-soft); }
+  .table-box {
+    background: var(--sage);
+    border-radius: 64px 40px 72px 40px;
+    padding: clamp(24px, 3vw, 36px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+  }
+  table { width: 100%; border-collapse: separate; border-spacing: 0 6px; font-size: 17px; }
+  th {
+    text-align: left;
+    font: 600 13px/1 var(--font-body);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cream);
+    padding: 6px 16px;
+  }
+  td { background: var(--cream); padding: 10px 16px; }
+  td:first-child { border-radius: 999px 0 0 999px; }
+  td:last-child { border-radius: 0 999px 999px 0; font-weight: 700; }
+</style>

@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+---
+
+<Base title="Página no encontrada" description="Esta página no existe. Vuelve al inicio de Enraíza.">
+  <section class="container not-found">
+    <div class="blob" aria-hidden="true"></div>
+    <span class="kicker">Error 404</span>
+    <h1 class="h1">Este camino no lleva a ningún lado.</h1>
+    <p class="lead">La página que buscas no existe o cambió de lugar.</p>
+    <div class="btn-row">
+      <a href={url('/')} class="btn btn--orange">Volver al inicio</a>
+      <a href={url('/tienda/')} class="btn btn--outline">Ver modelos</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    position: relative;
+    padding-block: clamp(56px, 10vw, 128px);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .not-found > :not(.blob) { position: relative; }
+  .not-found h1 { max-width: 16ch; }
+  .blob {
+    position: absolute;
+    right: clamp(20px, 6vw, 80px);
+    top: clamp(32px, 6vw, 80px);
+    width: clamp(120px, 18vw, 240px);
+    aspect-ratio: 1;
+    border-radius: var(--shape-blob-b);
+    background: var(--sage-light);
+  }
+</style>

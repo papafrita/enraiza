@@ -1,0 +1,10 @@
+{
+  "name": "Tepa",
+  "kind": "Botín caña alta",
+  "order": 2,
+  "description": "Botín de caña alta con elástico: flexibilidad, movimiento natural y abrigo.",
+  "features": ["Elástico lateral", "Forro abrigado", "Suela flexible"],
+  "image": "../../assets/modelos/tepa.png",
+  "alt": "Botines Tepa color suela sobre hojas secas",
+  "shape": "arch"
+}
