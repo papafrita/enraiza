@@ -7,16 +7,24 @@ import { getModelos, shapes, sizes, modeloHref } from '../../lib/modelos';
 import { waLink } from '../../site.config';
 import medirPie from '../../assets/medir-pie.png';
 import manio from '../../assets/modelos/manio.png';
+import greenShoes from '../../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.01 PM.jpeg';
+import pinkShoes from '../../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.18 PM.jpeg';
+import blackBoots from '../../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.19 PM (3).jpeg';
+import materialsAndTools from '../../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.17 PM.jpeg';
+import measuredCut from '../../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.20 PM (2).jpeg';
+import handAssembly from '../../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.21 PM.jpeg';
+import handFinish from '../../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.18 PM (1).jpeg';
+import finishedBoots from '../../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.19 PM (3).jpeg';
 
 const modelos = await getModelos();
 
 const steps = [
-  { title: 'Medimos', text: 'Revisamos medidas y características de tus pies.' },
-  { title: 'Eliges', text: 'Escoges modelo y tipo de suela.' },
-  { title: 'Fabricamos', text: 'Hacemos tu calzado de manera artesanal.' },
-  { title: 'Recibes', text: 'Un par hecho especialmente para ti.' },
+  { title: 'Selección de materiales', text: 'Elegimos cueros naturales de buena calidad con cuidado.', image: materialsAndTools, alt: 'Zapato de cuero junto a herramientas y materiales del taller' },
+  { title: 'Corte a medida', text: 'Preparamos cada pieza pensando en la forma única de tus pies.', image: measuredCut, alt: 'Artesana trabajando cuidadosamente una pieza de calzado' },
+  { title: 'Ensamblado artesanal', text: 'Unimos las piezas a mano con dedicación y precisión.', image: handAssembly, alt: 'Artesana dando forma a un zapato en su mesa de trabajo' },
+  { title: 'Terminaciones y detalles', text: 'Revisamos cada detalle para que tu par sea único y duradero.', image: handFinish, alt: 'Manos ajustando los detalles de un par de zapatos' },
+  { title: 'Listo para acompañarte', text: 'Tu par queda listo para acompañarte en cada paso.', image: finishedBoots, alt: 'Botines terminados fotografiados entre hojas de otoño' },
 ];
-const stepShapes = ['50%', shapes.blobA, '50%', shapes.blobB];
 
 const measure = [
   'Pon una hoja en el suelo junto a una pared y apoya el talón contra ella, de pie y con tu peso.',
@@ -83,26 +91,73 @@ const sizeCols = [sizes.slice(0, 6), sizes.slice(6)];
     }
   </section>
 
+  <section class="container more-pairs">
+    <div class="more-pairs-head">
+      <span class="kicker">Pares hechos en el taller</span>
+      <h2 class="h2">Colores y detalles para cada camino.</h2>
+      <p class="lead">Cada par se trabaja a mano: el cuero y sus terminaciones le dan un carácter propio.</p>
+    </div>
+    <div class="more-pairs-grid">
+      <figure>
+        <Picture src={greenShoes} alt="Zapatos verde oliva con cordones claros y suela blanca" widths={[380, 600]} sizes="(min-width: 1000px) 33vw, (min-width: 620px) 50vw, 100vw" formats={['avif', 'webp']} fallbackFormat="jpg" />
+        <figcaption>Verde oliva y cordones claros</figcaption>
+      </figure>
+      <figure>
+        <Picture src={pinkShoes} alt="Zapatos rosados de cuero con cordones" widths={[380, 600]} sizes="(min-width: 1000px) 33vw, (min-width: 620px) 50vw, 100vw" formats={['avif', 'webp']} fallbackFormat="jpg" />
+        <figcaption>Color suave, hecho a mano</figcaption>
+      </figure>
+      <figure>
+        <Picture src={blackBoots} alt="Botines negros de cuero y gamuza entre hojas de otoño" widths={[380, 600]} sizes="(min-width: 1000px) 33vw, (min-width: 620px) 50vw, 100vw" formats={['avif', 'webp']} fallbackFormat="jpg" />
+        <figcaption>Botines listos para el sur</figcaption>
+      </figure>
+    </div>
+  </section>
+
   <Wave variant="pale" />
   <section class="band--pale">
     <div class="container process">
-      <h2 class="h2">Nuestro proceso</h2>
+      <div class="process-head">
+        <span class="kicker">Hecho especialmente para ti</span>
+        <h2 class="h2">Así creamos tu par, paso a paso</h2>
+      </div>
       <ol>
         {
           steps.map((s, i) => (
-            <li class="offset" style={`--offset:${i % 2 ? '44px' : '0px'}`}>
-              <span
-                class="step-n"
-                style={`border-radius:${stepShapes[i]};background:${i % 2 ? 'var(--sage-light)' : 'var(--orange)'}`}
-              >
+            <li>
+              <div class="step-visual">
+                <Picture
+                  src={s.image}
+                  alt={s.alt}
+                  widths={[140, 220]}
+                  sizes="(min-width: 1000px) 120px, (min-width: 640px) 100px, 112px"
+                  formats={['avif', 'webp']}
+                  fallbackFormat="jpg"
+                  class="step-photo"
+                />
+              <span class:list={['step-n', { 'step-n--sage': i % 2 }]}>
                 {i + 1}
               </span>
+              </div>
               <span class="step-title">{s.title}</span>
               <span class="step-text">{s.text}</span>
             </li>
           ))
         }
       </ol>
+      <aside class="production-note" aria-label="Tiempo de producción aproximado">
+        <div class="production-clock" aria-hidden="true">
+          <span class="clock-face"><span class="clock-hand clock-hand--hour"></span><span class="clock-hand clock-hand--minute"></span></span>
+        </div>
+        <div class="production-copy">
+          <p>Nuestro tiempo de producción es de</p>
+          <h3>aprox. 15 días hábiles.</h3>
+          <p>Te contactaremos cuando tu pedido esté listo para coordinar el envío.</p>
+        </div>
+        <div class="production-thanks">
+          <span aria-hidden="true">♡</span>
+          <p>Gracias por tu paciencia y por valorar el trabajo hecho a mano.</p>
+        </div>
+      </aside>
     </div>
   </section>
   <Wave variant="pale" position="bottom" />
@@ -206,10 +261,10 @@ const sizeCols = [sizes.slice(0, 6), sizes.slice(6)];
 
   .listing {
     padding-top: 32px;
-    padding-bottom: clamp(56px, 8vw, 96px);
+    padding-bottom: clamp(40px, 5vw, 64px);
     display: flex;
     flex-direction: column;
-    gap: clamp(56px, 8vw, 96px);
+    gap: clamp(40px, 5vw, 64px);
   }
   /* Alterna imagen izq/der solo cuando hay 2 columnas (≥ ~880px). */
   @media (min-width: 880px) {
@@ -220,35 +275,112 @@ const sizeCols = [sizes.slice(0, 6), sizes.slice(6)];
   .model-text p { max-width: 38ch; }
   .model-text .btn-row { gap: 10px; margin-top: 6px; }
 
+  .more-pairs { padding-bottom: clamp(24px, 3vw, 40px); }
+  .more-pairs-head { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; margin-bottom: 32px; }
+  .more-pairs-head h2 { max-width: 18ch; }
+  .more-pairs-head p { max-width: 50ch; }
+  .more-pairs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 20px; align-items: start; }
+  .more-pairs-grid figure { overflow: hidden; background: var(--sand); border-radius: 48px 48px 48px 14px; }
+  .more-pairs-grid figure:nth-child(2) { margin-top: 36px; border-radius: 999px 999px 48px 48px; }
+  .more-pairs-grid figure :global(img) { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .more-pairs-grid figcaption { padding: 16px 20px 20px; font: 400 19px/1.2 var(--font-display); }
+
   .process {
-    padding-top: clamp(32px, 5vw, 64px);
-    padding-bottom: clamp(48px, 6vw, 72px);
+    padding-top: clamp(24px, 3vw, 40px);
+    padding-bottom: clamp(32px, 4vw, 52px);
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: 28px;
   }
+  .process-head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; max-width: 760px; margin-inline: auto; }
+  .process-head h2 { max-width: 20ch; }
   .process ol {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-    gap: 32px 24px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 24px 18px;
     align-items: start;
   }
-  .process li { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .process li { position: relative; display: flex; flex-direction: column; gap: 10px; align-items: center; text-align: center; }
+  .process li:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    top: 44px;
+    right: -15px;
+    color: var(--sage-dark);
+    font: 600 20px/1 var(--font-body);
+  }
+  .step-visual { position: relative; flex: none; width: 120px; height: 120px; max-width: 100%; margin-bottom: 4px; }
+  .step-visual :global(.step-photo) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
   .step-n {
-    width: 88px;
-    height: 88px;
+    position: absolute;
+    right: -4px;
+    bottom: -4px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
     display: grid;
     place-items: center;
-    font: 400 38px/1 var(--font-display);
-    color: var(--ink);
+    font: 700 14px/1 var(--font-body);
+    color: var(--cream);
+    background: var(--orange);
+    border: 3px solid var(--sage-pale);
   }
-  .step-title { font: 400 24px/1.15 var(--font-display); }
-  .step-text { font-size: 16px; color: var(--ink-soft); max-width: 26ch; }
+  .step-n--sage { background: var(--sage-dark); }
+  .step-title { font: 400 20px/1.15 var(--font-display); max-width: 16ch; }
+  .step-text { font-size: 14px; color: var(--ink-soft); max-width: 24ch; }
+  .production-note {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr) minmax(180px, 240px);
+    gap: 24px;
+    align-items: center;
+    padding: 20px 24px;
+    background: var(--cream);
+    border-radius: 48px 48px 48px 14px;
+  }
+  .production-clock {
+    min-height: 124px;
+    border-radius: 28px 12px 28px 28px;
+    background: var(--sage-dark);
+    color: var(--cream);
+    display: grid;
+    place-items: center;
+  }
+  .clock-face { position: relative; width: 68px; aspect-ratio: 1; border: 2px solid var(--cream); border-radius: 50%; }
+  .clock-face::after { content: ''; position: absolute; inset: 5px; border: 1px dotted rgba(255, 247, 228, .7); border-radius: 50%; }
+  .clock-hand { position: absolute; z-index: 1; left: 50%; bottom: 50%; width: 2px; background: var(--cream); border-radius: 2px; transform-origin: bottom; }
+  .clock-hand--hour { height: 19px; transform: translateX(-50%) rotate(-42deg); }
+  .clock-hand--minute { height: 25px; transform: translateX(-50%) rotate(18deg); }
+  .production-copy { display: flex; flex-direction: column; gap: 10px; }
+  .production-copy h3 { font: 400 clamp(27px, 3vw, 38px)/1 var(--font-display); color: var(--ink); }
+  .production-copy p { max-width: 46ch; color: var(--ink-soft); font-size: 15px; }
+  .production-thanks { background: var(--sand); border-radius: 24px 12px 24px 24px; padding: 16px; text-align: center; color: var(--ink-soft); }
+  .production-thanks span { display: block; color: var(--sage-dark); font: 400 26px/1 var(--font-body); margin-bottom: 8px; }
+  .production-thanks p { font: italic 14px/1.4 var(--font-body); }
 
-  .guide { padding-top: clamp(48px, 7vw, 96px); }
+  @media (max-width: 1000px) {
+    .process ol { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .process li::after { display: none; }
+    .production-note { grid-template-columns: 110px minmax(0, 1fr); }
+    .production-clock { min-height: 108px; }
+    .production-thanks { grid-column: 1 / -1; }
+  }
+  @media (max-width: 640px) {
+    .process ol { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 18px; }
+    .step-visual { width: 108px; height: 108px; }
+    .step-title { font-size: 20px; }
+    .production-note { grid-template-columns: 1fr; }
+    .production-clock { min-height: 96px; }
+    .production-thanks { grid-column: auto; }
+    .more-pairs-grid figure:nth-child(2) { margin-top: 0; }
+  }
+  @media (max-width: 420px) {
+    .process ol { grid-template-columns: 1fr; }
+  }
+
+  .guide { padding-top: clamp(40px, 5vw, 64px); }
   .guide-text { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
   .guide-text h2 { font-size: clamp(36px, 4.6vw, 60px); }
   .guide-text .lead { max-width: 44ch; }
@@ -295,7 +427,7 @@ const sizeCols = [sizes.slice(0, 6), sizes.slice(6)];
   }
   .tag span:last-child { font: 400 18px/1.2 var(--font-display); }
 
-  .size-table { padding-top: clamp(56px, 8vw, 96px); align-items: start; }
+  .size-table { padding-top: clamp(40px, 5vw, 64px); align-items: start; }
   .measure { display: flex; flex-direction: column; gap: 28px; }
   .measure h2 { font-size: clamp(32px, 3.8vw, 48px); }
   .measure ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }

@@ -4,7 +4,10 @@ import Base from '../layouts/Base.astro';
 import Wave from '../components/Wave.astro';
 import Accordion from '../components/Accordion.astro';
 import { igHandle, igLink, waTaller } from '../site.config';
-import koru from '../assets/modelos/koru.png';
+import workshop from '../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.21 PM.jpeg';
+import craftDetail from '../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.20 PM (2).jpeg';
+import workshopWide from '../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.21 PM (1).jpeg';
+import shoemakingMentors from '../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.20 PM (1).jpeg';
 
 const learn = [
   { title: 'Medidas y horma', text: 'Cómo leer el pie y elegir una horma respetuosa.' },
@@ -40,7 +43,7 @@ const faqs: [string, string][] = [
 <Base
   title="Talleres de calzado artesanal"
   description="Aprende a hacer tu propio calzado en Valdivia: medidas y horma, patronaje, corte de cuero, costura y suela. Grupos pequeños, sin experiencia previa."
-  ogImage={koru}
+  ogImage={workshop}
 >
   <section class="container split hero" style="--min:400px">
     <div class="hero-text">
@@ -54,8 +57,8 @@ const faqs: [string, string][] = [
     <div class="figure hero-figure">
       <div class="deco" aria-hidden="true" style="left:-7%;top:-6%;width:44%;background:var(--sage-light)"></div>
       <Picture
-        src={koru}
-        alt="Botines Korü sobre rocas junto a un río"
+        src={workshop}
+        alt="Artesana trabajando en un zapato en su taller"
         widths={[480, 765]}
         sizes="(min-width: 600px) 520px, 100vw"
         formats={['avif', 'webp']}
@@ -87,6 +90,28 @@ const faqs: [string, string][] = [
     </div>
   </section>
   <Wave variant="sage" position="bottom" />
+
+  <section class="container workshop-gallery">
+    <div class="workshop-gallery-head">
+      <span class="kicker">Manos a la obra</span>
+      <h2 class="h2">Así se vive el oficio en el taller.</h2>
+      <p class="lead">Un espacio para aprender haciendo, compartir herramientas y descubrir cada etapa de la confección.</p>
+    </div>
+    <div class="workshop-gallery-grid">
+      <figure class="workshop-photo workshop-photo--detail">
+        <Picture src={craftDetail} alt="Artesana trabajando de cerca en la confección de un zapato" widths={[500, 820]} sizes="(min-width: 900px) 38vw, 100vw" formats={['avif', 'webp']} fallbackFormat="jpg" />
+        <figcaption>Práctica guiada en cada etapa</figcaption>
+      </figure>
+      <figure class="workshop-photo workshop-photo--wide">
+        <Picture src={workshopWide} alt="Vista amplia del taller de calzado con herramientas y materiales" widths={[500, 820]} sizes="(min-width: 900px) 38vw, 100vw" formats={['avif', 'webp']} fallbackFormat="jpg" />
+        <figcaption>Herramientas y materiales del oficio</figcaption>
+      </figure>
+      <figure class="workshop-photo workshop-photo--mentors">
+        <Picture src={shoemakingMentors} alt="Zapateros compartiendo su manual de calzado artesanal" widths={[500, 820]} sizes="(min-width: 900px) 38vw, 100vw" formats={['avif', 'webp']} fallbackFormat="jpg" />
+        <figcaption>Un oficio que se comparte</figcaption>
+      </figure>
+    </div>
+  </section>
 
   <section class="container split includes" style="--min:380px; --gap:clamp(32px,5vw,72px)">
     <div class="includes-text">
@@ -165,21 +190,42 @@ const faqs: [string, string][] = [
   .learn-title { font: 400 21px/1.15 var(--font-display); }
   .learn-text { font-size: 15px; color: var(--ink-soft); }
 
-  .includes { padding-top: clamp(48px, 7vw, 88px); align-items: start; }
+  .workshop-gallery { padding-top: clamp(32px, 4vw, 52px); }
+  .workshop-gallery-head { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; margin-bottom: 32px; }
+  .workshop-gallery-head h2 { max-width: 18ch; }
+  .workshop-gallery-head p { max-width: 52ch; }
+  .workshop-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+  }
+  .workshop-photo { overflow: hidden; background: var(--sand); border-radius: 48px 48px 48px 12px; }
+  .workshop-photo--wide { margin-top: 44px; border-radius: 999px 999px 48px 48px; }
+  .workshop-photo--mentors { margin-top: 16px; border-radius: 48px 12px 48px 48px; }
+  .workshop-photo :global(img) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  .workshop-photo figcaption { padding: 16px 20px 20px; font: 400 19px/1.2 var(--font-display); }
+
+  .includes { padding-top: clamp(32px, 4vw, 52px); align-items: start; }
   .includes-text { display: flex; flex-direction: column; gap: 20px; }
   .includes-text .lead { max-width: 40ch; }
   .includes-list { flex-direction: column; }
   .includes-list li { background: var(--sage-pale); font-size: 17px; }
 
+  @media (max-width: 760px) {
+    .workshop-gallery-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+    .workshop-photo--wide, .workshop-photo--mentors { margin-top: 0; }
+  }
+
   .faq {
-    padding-top: clamp(56px, 8vw, 96px);
+    padding-top: clamp(40px, 5vw, 64px);
     display: flex;
     flex-direction: column;
     gap: 32px;
   }
   .faq :global(.faq-list) { max-width: 860px; }
 
-  .dates-wrap { padding: clamp(56px, 8vw, 96px) var(--gutter) 0; }
+  .dates-wrap { padding: clamp(40px, 5vw, 64px) var(--gutter) 0; }
   .dates {
     max-width: var(--maxw);
     margin: 0 auto;

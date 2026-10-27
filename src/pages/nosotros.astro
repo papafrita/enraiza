@@ -1,7 +1,11 @@
 ---
 import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import boot from '../assets/boot.jpg';
+import craftswoman from '../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.20 PM (2).jpeg';
+import redShoes from '../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.00 PM.jpeg';
+import greenBoots from '../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.19 PM (1).jpeg';
+import texturedShoes from '../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.19 PM.jpeg';
+import outdoorShoes from '../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.20 PM.jpeg';
 
 const values = [
   { title: 'A medida', text: 'Cada par parte de las medidas de tus pies, no de un molde genérico.', color: 'var(--orange)', bg: 'var(--sage-pale)', offset: '0px', radius: '56px 56px 56px 14px' },
@@ -13,14 +17,14 @@ const values = [
 <Base
   title="Nuestra esencia"
   description="Enraíza es una marca valdiviana que crea calzado ergonómico hecho a mano y a medida, diseñado para respetar la forma y función natural de los pies."
-  ogImage={boot}
+  ogImage={craftswoman}
 >
   <section class="container split intro" style="--min:400px">
     <div class="figure intro-figure">
       <div class="backdrop" aria-hidden="true"></div>
       <Picture
-        src={boot}
-        alt="Botín negro de cuero sostenido en la mano"
+        src={craftswoman}
+        alt="Artesana de Enraíza junto a sus zapatos y herramientas en el taller"
         widths={[440, 853]}
         sizes="(min-width: 500px) 440px, 100vw"
         formats={['avif', 'webp']}
@@ -57,6 +61,32 @@ const values = [
       ))
     }
   </section>
+
+  <section class="container pairs">
+    <div class="pairs-head">
+      <span class="kicker">Calzado hecho con oficio</span>
+      <h2 class="h2">Cada par lleva algo de quien lo crea.</h2>
+      <p class="lead">Cuero, color y detalles se encuentran en zapatos hechos a mano para acompañar el movimiento de cada día.</p>
+    </div>
+    <div class="pairs-grid">
+      <figure>
+        <Picture src={redShoes} alt="Par de zapatos rojos de cuero con cordones" widths={[360, 560]} sizes="(min-width: 900px) 25vw, (min-width: 600px) 50vw, 100vw" formats={['avif', 'webp']} fallbackFormat="jpg" />
+        <figcaption>Un rojo que se hace notar</figcaption>
+      </figure>
+      <figure>
+        <Picture src={greenBoots} alt="Botines verde oliva de cuero, con cordones" widths={[360, 560]} sizes="(min-width: 900px) 25vw, (min-width: 600px) 50vw, 100vw" formats={['avif', 'webp']} fallbackFormat="jpg" />
+        <figcaption>Tonos naturales y cálidos</figcaption>
+      </figure>
+      <figure>
+        <Picture src={texturedShoes} alt="Zapatos rojos con textura brillante" widths={[360, 560]} sizes="(min-width: 900px) 25vw, (min-width: 600px) 50vw, 100vw" formats={['avif', 'webp']} fallbackFormat="jpg" />
+        <figcaption>Texturas con personalidad</figcaption>
+      </figure>
+      <figure>
+        <Picture src={outdoorShoes} alt="Zapatos Enraíza puestos para caminar sobre las rocas del sur" widths={[360, 560]} sizes="(min-width: 900px) 25vw, (min-width: 600px) 50vw, 100vw" formats={['avif', 'webp']} fallbackFormat="jpg" />
+        <figcaption>Listos para salir a caminar</figcaption>
+      </figure>
+    </div>
+  </section>
 </Base>
 
 <style>
@@ -83,4 +113,19 @@ const values = [
   .dot { width: 48px; height: 48px; border-radius: 50%; }
   .value h2 { font-size: 26px; }
   .value p { font-size: 16px; color: var(--ink-soft); }
+
+  .pairs { padding-block: clamp(40px, 6vw, 72px); }
+  .pairs-head { max-width: 680px; display: flex; flex-direction: column; gap: 18px; margin-bottom: 36px; }
+  .pairs-head h2 { max-width: 16ch; }
+  .pairs-head p { max-width: 52ch; }
+  .pairs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 18px;
+    align-items: start;
+  }
+  .pairs figure { overflow: hidden; background: var(--sand); border-radius: 44px 44px 44px 12px; }
+  .pairs figure:nth-child(even) { border-radius: 999px 999px 44px 44px; }
+  .pairs figure :global(img) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  .pairs figcaption { padding: 16px 20px 20px; font: 400 19px/1.2 var(--font-display); }
 </style>
