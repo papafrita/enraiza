@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Accordion from '../components/Accordion.astro';
 import { site, igHandle, igLink, mailLink, waGeneral } from '../site.config';
-import tallerVisita from '../assets/taller-visita.png';
+import workshop from '../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.21 PM.jpeg';
 
 // PENDIENTE: confirmar dirección, horarios, nombres y email con el cliente.
 const visitInfo = [
@@ -48,7 +48,7 @@ const jsonLd = {
 <Base
   title="Contacto y visitas al taller"
   description="Visítanos en nuestro taller en Isla Teja, Valdivia, para medir tus pies y probar calces. Encargos a medida por WhatsApp e Instagram."
-  ogImage={tallerVisita}
+  ogImage={workshop}
   jsonLd={jsonLd}
 >
   <section class="container split visits" style="--gap:clamp(40px,6vw,72px)">
@@ -88,8 +88,8 @@ const jsonLd = {
       <div class="figure">
         <div class="deco" aria-hidden="true" style="right:-6%;top:-6%;width:34%;background:var(--orange)"></div>
         <Picture
-          src={tallerVisita}
-          alt="Artesana cosiendo un zapato en el taller"
+          src={workshop}
+          alt="Artesana de Enraíza trabajando en un zapato dentro del taller"
           widths={[330]}
           sizes="(min-width: 940px) 560px, 100vw"
           formats={['avif', 'webp']}
