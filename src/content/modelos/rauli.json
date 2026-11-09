@@ -1,0 +1,14 @@
+{
+  "name": "Raulí",
+  "kind": "Botín barefoot",
+  "order": 6,
+  "description": "Diseño barefoot, liviano y flexible. Se adapta y se mueve junto a ti.",
+  "features": ["Barefoot", "Cordones", "Cuero y gamuza"],
+  "image": "../../assets/modelos/rauli.jpg",
+  "alt": "Par de botines Raulí de cuero naranjo y gamuza roja sobre el pasto",
+  "shape": "leaf",
+  "gallery": [
+    { "src": "../../assets/modelos/rauli-lateral.jpg", "alt": "Vista lateral del botín Raulí sobre pasto con margaritas" },
+    { "src": "../../assets/modelos/rauli-diseno.jpg", "alt": "Ficha de diseño del modelo Raulí con boceto a línea y foto del botín" }
+  ]
+}

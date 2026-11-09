@@ -15,6 +15,8 @@ const modelos = defineCollection({
       image: image(),
       alt: z.string(),
       shape: z.enum(['blobA', 'arch', 'blobB', 'leaf']),
+      // Fotos adicionales (bocetos de diseño, otras vistas) para la ficha del modelo.
+      gallery: z.array(z.object({ src: image(), alt: z.string() })).default([]),
     }),
 });
 

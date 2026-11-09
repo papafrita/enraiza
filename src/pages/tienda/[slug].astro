@@ -112,6 +112,27 @@ const jsonLd = {
     </div>
   </section>
 
+  {
+    m.gallery.length > 0 && (
+      <section class="container gallery" aria-labelledby="gallery-title">
+        <h2 class="h2" id="gallery-title">Diseño y detalles</h2>
+        <div class="gallery-grid">
+          {m.gallery.map((g, i) => (
+            <Picture
+              src={g.src}
+              alt={g.alt}
+              widths={[400, 800]}
+              sizes="(min-width: 1100px) 380px, (min-width: 640px) 45vw, 100vw"
+              formats={['avif', 'webp']}
+              fallbackFormat="jpg"
+              style={`aspect-ratio:3/4;border-radius:${i % 2 ? '40px 40px 40px 12px' : '40px 40px 12px 40px'}`}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
   <Wave variant="pale" />
   <section class="band--pale">
     <div class="container others">
@@ -216,6 +237,19 @@ const jsonLd = {
     font-size: 16px;
   }
   .note { font-size: 14px; color: var(--ink-soft); }
+
+  .gallery {
+    padding-bottom: clamp(48px, 6vw, 72px);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 380px));
+    gap: 28px;
+  }
+  .gallery-grid :global(img) { width: 100%; height: auto; object-fit: cover; }
 
   .others {
     padding-top: clamp(32px, 5vw, 56px);

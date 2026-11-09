@@ -1,0 +1,13 @@
+{
+  "name": "Melí",
+  "kind": "Alpargata",
+  "order": 5,
+  "description": "Clásicas alpargatas ergonómicas, flexibles para que tus pies se muevan libres. Un básico que acompaña tu estilo.",
+  "features": ["Sin cordones", "Suela flexible", "Horma ancha"],
+  "image": "../../assets/modelos/meli.jpg",
+  "alt": "Alpargatas Melí de cuero rojo grabado sobre papel",
+  "shape": "blobB",
+  "gallery": [
+    { "src": "../../assets/modelos/meli-diseno.jpg", "alt": "Ficha de diseño del modelo Melí con boceto a línea y foto del par rojo" }
+  ]
+}
