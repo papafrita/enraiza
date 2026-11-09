@@ -1,0 +1,232 @@
+---
+// Página de prueba: el espacio comunitario de artistas donde Enraíza exhibe sus pares.
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Wave from '../components/Wave.astro';
+import Icon from '../components/Icon.astro';
+import { url } from '../lib/url';
+import { waLink } from '../site.config';
+import calle from '../assets/donde/calle.jpg';
+import pasaje from '../assets/donde/pasaje.jpg';
+import sala from '../assets/donde/sala.jpg';
+import terraza from '../assets/donde/terraza.jpg';
+
+// PENDIENTE: confirmar con el cliente nombre del espacio, dirección, horario y coordenadas del mapa.
+const espacio = {
+  nombre: 'Espacio comunitario de artistas',
+  direccion: 'Dirección por confirmar · Valdivia, Región de Los Ríos',
+  horario: 'Horario por confirmar',
+  // Centro de Valdivia mientras no tengamos la ubicación exacta.
+  lat: -39.8142,
+  lon: -73.2459,
+};
+
+const mapsQuery = encodeURIComponent(`${espacio.nombre}, Valdivia, Chile`);
+const mapsLink = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+const d = 0.01;
+const mapSrc =
+  `https://www.openstreetmap.org/export/embed.html?bbox=${espacio.lon - d}%2C${espacio.lat - d / 2}%2C${espacio.lon + d}%2C${espacio.lat + d / 2}` +
+  `&layer=mapnik&marker=${espacio.lat}%2C${espacio.lon}`;
+
+const pasos = [
+  { img: calle, title: 'Llega a la casona blanca', text: 'Desde la calle, busca la casona patrimonial blanca. La entrada está a un costado.', alt: 'Fachada de una casona blanca de Valdivia vista desde la calle' },
+  { img: pasaje, title: 'Entra por el pasaje verde', text: 'Sigue el pasaje lateral cubierto de enredaderas hasta la puerta del espacio.', alt: 'Pasaje angosto junto a un muro blanco cubierto de enredaderas' },
+  { img: sala, title: 'Encuentra nuestro rincón', text: 'En la sala de madera compartimos espacio con otros artistas y artesanos locales.', alt: 'Sala de madera con estanterías y prendas de artistas locales' },
+  { img: terraza, title: 'Quédate junto al río', text: 'Al fondo, la terraza mira al río: el lugar ideal para probarte un par con calma.', alt: 'Terraza de madera con vista al río Valdivia' },
+];
+---
+
+<Base
+  title="Dónde nos encuentras"
+  description="Encuentra los pares de Enraíza en un espacio comunitario de artistas junto al río en Valdivia. Ven a verlos, tocarlos y probártelos."
+  ogImage={terraza}
+>
+  <section class="container split hero" style="--gap:clamp(40px,6vw,80px)">
+    <div class="hero-text">
+      <span class="kicker">Espacio comunitario de artistas</span>
+      <h1>Dónde nos encuentras</h1>
+      <p class="lead">
+        Nuestros pares viven en un espacio compartido con artistas y artesanos de Valdivia: una casona junto al río
+        donde cada creador muestra su trabajo. Ven a ver los modelos en persona, tocar el cuero y probarte tu talla.
+      </p>
+      <ul class="info">
+        <li>
+          <span class="info-icon"><Icon name="map-pin" size={22} color="var(--sage-dark)" /></span>
+          <div>
+            <h2>{espacio.nombre}</h2>
+            <p>{espacio.direccion}</p>
+          </div>
+        </li>
+        <li>
+          <span class="info-icon"><Icon name="clock" size={22} color="var(--sage-dark)" /></span>
+          <div>
+            <h2>Horario</h2>
+            <p>{espacio.horario}</p>
+          </div>
+        </li>
+        <li>
+          <span class="info-icon"><Icon name="users" size={22} color="var(--sage-dark)" /></span>
+          <div>
+            <h2>Hecho en comunidad</h2>
+            <p>Compartimos sala con otros oficios locales: textil, cerámica, ilustración y más.</p>
+          </div>
+        </li>
+      </ul>
+      <div class="btn-row">
+        <a href={mapsLink} target="_blank" rel="noopener" class="btn btn--orange">Cómo llegar</a>
+        <a
+          href={waLink('Hola Enraíza, quiero visitarlos en el espacio de artistas. ¿Qué días puedo ir?')}
+          target="_blank"
+          rel="noopener"
+          class="btn btn--outline"
+        >
+          Avísanos que vienes
+        </a>
+      </div>
+    </div>
+
+    <div class="figure video-wrap">
+      <div class="deco" aria-hidden="true" style="left:-8%;top:-5%;width:40%;background:var(--sage-light)"></div>
+      <video
+        src={url('/media/espacio-recorrido.mp4')}
+        poster={url('/media/espacio-recorrido-poster.jpg')}
+        autoplay
+        muted
+        loop
+        playsinline
+        controls
+        preload="metadata"
+        aria-label="Recorrido en video por el espacio de artistas, desde la calle hasta la terraza junto al río"
+      ></video>
+    </div>
+  </section>
+
+  <Wave variant="pale" />
+  <section class="band--pale">
+    <div class="container route">
+      <h2 class="h2">Cómo llegar, paso a paso</h2>
+      <ol class="steps">
+        {
+          pasos.map((p, i) => (
+            <li>
+              <Picture
+                src={p.img}
+                alt={p.alt}
+                widths={[320, 576]}
+                sizes="(min-width: 1100px) 280px, (min-width: 640px) 45vw, 100vw"
+                formats={['avif', 'webp']}
+                fallbackFormat="jpg"
+                style={`aspect-ratio:3/4;border-radius:${i % 2 ? '40px 40px 40px 12px' : '40px 40px 12px 40px'}`}
+              />
+              <span class="step-num">{i + 1}</span>
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+  <Wave variant="pale" position="bottom" />
+
+  <section class="container map-section">
+    <div class="map">
+      <iframe title={`Mapa: ${espacio.nombre}, Valdivia`} src={mapSrc} loading="lazy"></iframe>
+      <span class="badge"><Icon name="map-pin" size={16} color="var(--orange-ink)" />Valdivia · junto al río</span>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-top: clamp(32px, 5vw, 64px);
+    padding-bottom: clamp(48px, 6vw, 80px);
+    align-items: center;
+  }
+  .hero-text { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+  .hero-text h1 { font-size: clamp(44px, 6vw, 80px); }
+  .hero-text .lead { max-width: 40ch; }
+
+  .info { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+  .info li { display: flex; gap: 16px; align-items: flex-start; }
+  .info-icon {
+    flex: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--sage-pale);
+    display: grid;
+    place-items: center;
+  }
+  .info h2 { font: 400 22px/1.2 var(--font-display); margin: 0 0 4px; }
+  .info p { margin: 0; color: var(--ink-soft); }
+
+  .btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .video-wrap { justify-self: center; width: min(100%, 380px); }
+  .video-wrap video {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    object-fit: cover;
+    background: var(--sand);
+    border-radius: 200px 200px 40px 40px;
+  }
+
+  .route {
+    padding-top: clamp(32px, 5vw, 56px);
+    padding-bottom: clamp(48px, 6vw, 72px);
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 32px 24px;
+  }
+  .steps li { display: flex; flex-direction: column; gap: 10px; position: relative; }
+  .steps :global(img) { width: 100%; height: auto; object-fit: cover; }
+  .step-num {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: var(--ink);
+    display: grid;
+    place-items: center;
+    font: 400 20px/1 var(--font-display);
+  }
+  .steps h3 { font: 400 24px/1.15 var(--font-display); margin: 6px 0 0; }
+  .steps p { margin: 0; color: var(--ink-soft); }
+
+  .map-section { padding-block: clamp(48px, 6vw, 80px); }
+  .map { position: relative; }
+  .map iframe {
+    display: block;
+    width: 100%;
+    height: clamp(280px, 40vw, 420px);
+    border: 0;
+    border-radius: 40px 40px 40px 12px;
+  }
+  .badge {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--cream);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font: 600 14px/1 var(--font-body);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+</style>
