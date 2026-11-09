@@ -10,6 +10,7 @@ import calle from '../assets/donde/calle.jpg';
 import pasaje from '../assets/donde/pasaje.jpg';
 import sala from '../assets/donde/sala.jpg';
 import terraza from '../assets/donde/terraza.jpg';
+import rio from '../assets/donde/rio.jpg';
 
 // PENDIENTE: confirmar con el cliente nombre del espacio, dirección, horario y coordenadas del mapa.
 const espacio = {
@@ -39,7 +40,7 @@ const pasos = [
 <Base
   title="Dónde nos encuentras"
   description="Encuentra los pares de Enraíza en un espacio comunitario de artistas junto al río en Valdivia. Ven a verlos, tocarlos y probártelos."
-  ogImage={terraza}
+  ogImage={rio}
 >
   <section class="container split hero" style="--gap:clamp(40px,6vw,80px)">
     <div class="hero-text">
@@ -85,19 +86,18 @@ const pasos = [
       </div>
     </div>
 
-    <div class="figure video-wrap">
+    <div class="figure hero-photo">
       <div class="deco" aria-hidden="true" style="left:-8%;top:-5%;width:40%;background:var(--sage-light)"></div>
-      <video
-        src={url('/media/espacio-recorrido.mp4')}
-        poster={url('/media/espacio-recorrido-poster.jpg')}
-        autoplay
-        muted
-        loop
-        playsinline
-        controls
-        preload="metadata"
-        aria-label="Recorrido en video por el espacio de artistas, desde la calle hasta la terraza junto al río"
-      ></video>
+      <Picture
+        src={rio}
+        alt="Terraza de madera con quitasoles junto al río, en el espacio de artistas"
+        widths={[380, 576]}
+        sizes="(min-width: 940px) 380px, 100vw"
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+        loading="eager"
+        fetchpriority="high"
+      />
     </div>
   </section>
 
@@ -128,6 +128,27 @@ const pasos = [
     </div>
   </section>
   <Wave variant="pale" position="bottom" />
+
+  <section class="container split tour" style="--gap:clamp(40px,6vw,80px)">
+    <div class="tour-text">
+      <span class="kicker">Recorrido en video</span>
+      <h2 class="h2">Mira el recorrido</h2>
+      <p class="lead">
+        De la calle a la terraza junto al río en 30 segundos: así se llega a nuestro rincón dentro del espacio.
+      </p>
+    </div>
+    <div class="figure video-wrap">
+      <div class="deco" aria-hidden="true" style="right:-8%;top:-5%;width:40%;background:var(--orange)"></div>
+      <video
+        src={url('/media/espacio-recorrido.mp4')}
+        poster={url('/media/espacio-recorrido-poster.jpg')}
+        controls
+        playsinline
+        preload="none"
+        aria-label="Recorrido en video por el espacio de artistas, desde la calle hasta la terraza junto al río"
+      ></video>
+    </div>
+  </section>
 
   <section class="container map-section">
     <div class="map">
@@ -163,7 +184,13 @@ const pasos = [
 
   .btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
 
-  .video-wrap { justify-self: center; width: min(100%, 380px); }
+  .hero-photo { justify-self: center; width: min(100%, 380px); }
+  .hero-photo :global(img) { aspect-ratio: 9 / 16; border-radius: 200px 200px 40px 40px; }
+
+  .tour { padding-top: clamp(48px, 6vw, 80px); align-items: center; }
+  .tour-text { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
+  .tour-text .lead { max-width: 36ch; }
+  .video-wrap { justify-self: center; width: min(100%, 340px); }
   .video-wrap video {
     position: relative;
     display: block;
@@ -171,7 +198,7 @@ const pasos = [
     aspect-ratio: 9 / 16;
     object-fit: cover;
     background: var(--sand);
-    border-radius: 200px 200px 40px 40px;
+    border-radius: 40px 40px 40px 12px;
   }
 
   .route {
