@@ -3,8 +3,8 @@ export const site = {
   name: 'Enraíza',
   // Dominio público (se usa en canonical, Open Graph y sitemap).
   url: 'https://enraizazapatos.cl',
-  // PENDIENTE: reemplazar por el número real (solo dígitos, con código de país).
-  whatsapp: '56900000000',
+  whatsapp: '56939362967',
+  address: 'Yungay 735, Valdivia',
   instagram: 'enraizazapatos',
   // PENDIENTE: confirmar con el cliente.
   email: 'taller@enraizazapatos.cl',

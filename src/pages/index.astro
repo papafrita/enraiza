@@ -3,7 +3,7 @@ import { Picture } from 'astro:assets';
 import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import Wave from '../components/Wave.astro';
-import ModelCard from '../components/ModelCard.astro';
+import ModelQuickView from '../components/ModelQuickView.astro';
 import { getModelos } from '../lib/modelos';
 import { site } from '../site.config';
 import foot from '../assets/foot.png';
@@ -92,7 +92,7 @@ const testimonials = [
       <a href={url('/tienda/')} class="btn btn--outline btn--sm">Ver tienda completa →</a>
     </div>
     <div class="models-grid">
-      {modelos.map((m, i) => <ModelCard modelo={m} offset={i % 2 ? '56px' : '0px'} />)}
+      {modelos.map((m, i) => <ModelQuickView modelo={m} offset={i % 2 ? '56px' : '0px'} />)}
     </div>
   </section>
 
@@ -135,6 +135,48 @@ const testimonials = [
     )
   }
 </Base>
+
+<script>
+  // Abrir / cerrar los modales de "Nuestros modelos".
+  document.querySelectorAll<HTMLButtonElement>('[data-open-dialog]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const dialog = document.getElementById(btn.dataset.openDialog!) as HTMLDialogElement | null;
+      dialog?.showModal();
+    });
+  });
+
+  document.querySelectorAll<HTMLDialogElement>('[data-quickview]').forEach((dialog) => {
+    dialog.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (e.target === dialog || target.closest('[data-close]')) dialog.close();
+    });
+  });
+
+  // Selector de talla / suela dentro de cada modal (misma lógica que la ficha en tienda).
+  document.querySelectorAll<HTMLElement>('[data-quickview-picker]').forEach((root) => {
+    const model = root.dataset.model!;
+    const number = root.dataset.wa!;
+    const summary = root.querySelector<HTMLElement>('[data-summary]')!;
+    const reserve = root.querySelector<HTMLAnchorElement>('[data-reserve]')!;
+    const sizeBtns = [...root.querySelectorAll<HTMLButtonElement>('[data-size]')];
+    const soleBtns = [...root.querySelectorAll<HTMLButtonElement>('[data-sole]')];
+
+    let size: string | null = null;
+    let sole = soleBtns[0].dataset.sole!;
+
+    const render = () => {
+      sizeBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.size === size)));
+      soleBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sole === sole)));
+      const soleText = sole.toLowerCase();
+      summary.textContent = `${model} · ${size ? 'talla ' + size : 'talla por definir'} · ${soleText}`;
+      const msg = `Hola Enraíza, quiero reservar el modelo ${model}${size ? ', talla ' + size : ''}, con ${soleText}.`;
+      reserve.href = `https://wa.me/${number}?text=${encodeURIComponent(msg)}`;
+    };
+
+    sizeBtns.forEach((b) => b.addEventListener('click', () => { size = b.dataset.size!; render(); }));
+    soleBtns.forEach((b) => b.addEventListener('click', () => { sole = b.dataset.sole!; render(); }));
+  });
+</script>
 
 <style>
   /* Hero */

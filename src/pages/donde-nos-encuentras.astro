@@ -5,29 +5,23 @@ import Base from '../layouts/Base.astro';
 import Wave from '../components/Wave.astro';
 import Icon from '../components/Icon.astro';
 import { url } from '../lib/url';
-import { waLink } from '../site.config';
+import { site, waLink } from '../site.config';
 import calle from '../assets/donde/calle.jpg';
 import pasaje from '../assets/donde/pasaje.jpg';
 import sala from '../assets/donde/sala.jpg';
 import terraza from '../assets/donde/terraza.jpg';
 import rio from '../assets/donde/rio.jpg';
 
-// PENDIENTE: confirmar con el cliente nombre del espacio, dirección, horario y coordenadas del mapa.
+// PENDIENTE: confirmar con el cliente nombre del espacio y horario.
 const espacio = {
   nombre: 'Espacio comunitario de artistas',
-  direccion: 'Dirección por confirmar · Valdivia, Región de Los Ríos',
+  direccion: site.address,
   horario: 'Horario por confirmar',
-  // Centro de Valdivia mientras no tengamos la ubicación exacta.
-  lat: -39.8142,
-  lon: -73.2459,
 };
 
-const mapsQuery = encodeURIComponent(`${espacio.nombre}, Valdivia, Chile`);
+const mapsQuery = encodeURIComponent(`${espacio.direccion}, Chile`);
 const mapsLink = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
-const d = 0.01;
-const mapSrc =
-  `https://www.openstreetmap.org/export/embed.html?bbox=${espacio.lon - d}%2C${espacio.lat - d / 2}%2C${espacio.lon + d}%2C${espacio.lat + d / 2}` +
-  `&layer=mapnik&marker=${espacio.lat}%2C${espacio.lon}`;
+const mapSrc = `https://maps.google.com/maps?q=${mapsQuery}&output=embed`;
 
 const pasos = [
   { img: calle, title: 'Llega a la casona blanca', text: 'Desde la calle, busca la casona patrimonial blanca. La entrada está a un costado.', alt: 'Fachada de una casona blanca de Valdivia vista desde la calle' },

@@ -6,9 +6,8 @@ import Accordion from '../components/Accordion.astro';
 import { site, igHandle, igLink, mailLink, waGeneral } from '../site.config';
 import workshop from '../assets/new_material/WhatsApp Image 2026-10-12 at 10.58.21 PM.jpeg';
 
-// PENDIENTE: confirmar dirección, horarios, nombres y email con el cliente.
 const visitInfo = [
-  { icon: 'map-pin', title: 'Taller botánico & escuela de oficio', text: 'Sector Los Pellines / Isla Teja Ribera, Valdivia, Región de Los Ríos.' },
+  { icon: 'map-pin', title: 'Taller botánico & escuela de oficio', text: `${site.address}, Región de Los Ríos.` },
   { icon: 'clock', title: 'Horarios de prueba (previa cita)', text: 'Martes a viernes: 10:00 a 13:00 / 15:30 a 19:00 hrs. Sábados: mañanas dedicadas a pruebas y retiro de pares.' },
   { icon: 'users', title: 'Trato directo con los zapateros', text: 'Atención directa con Rodrigo Valenzuela y Camila Soto, fundadores y artesanos de Enraíza.' },
 ] as const;
@@ -32,12 +31,11 @@ const jsonLd = {
   sameAs: [igLink],
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Isla Teja',
+    streetAddress: 'Yungay 735',
     addressLocality: 'Valdivia',
     addressRegion: 'Región de Los Ríos',
     addressCountry: 'CL',
   },
-  geo: { '@type': 'GeoCoordinates', latitude: -39.8095, longitude: -73.2505 },
   openingHoursSpecification: [
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '10:00', closes: '13:00' },
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '15:30', closes: '19:00' },
@@ -47,7 +45,7 @@ const jsonLd = {
 
 <Base
   title="Contacto y visitas al taller"
-  description="Visítanos en nuestro taller en Isla Teja, Valdivia, para medir tus pies y probar calces. Encargos a medida por WhatsApp e Instagram."
+  description={`Visítanos en ${site.address} para medir tus pies y probar calces. Encargos a medida por WhatsApp e Instagram.`}
   ogImage={workshop}
   jsonLd={jsonLd}
 >
@@ -56,7 +54,7 @@ const jsonLd = {
       <span class="kicker">Encuentro en Valdivia</span>
       <h1>Visitas al taller &amp; asesoría presencial</h1>
       <p class="lead">
-        Si estás o visitas el sur, te recibimos en nuestro taller ribereño para medir tus pies personalmente, probar
+        Si estás o visitas el sur, te recibimos en nuestro taller para medir tus pies personalmente, probar
         calces en movimiento y compartir una infusión de hierbas locales mientras conversamos sobre tus pies.
       </p>
       <ul class="visit-info">
@@ -101,11 +99,11 @@ const jsonLd = {
       </div>
       <div class="map">
         <iframe
-          title="Mapa: Isla Teja, Valdivia"
-          src="https://www.openstreetmap.org/export/embed.html?bbox=-73.300%2C-39.840%2C-73.200%2C-39.785&layer=mapnik&marker=-39.8095%2C-73.2505"
+          title={`Mapa: ${site.address}`}
+          src={`https://maps.google.com/maps?q=${encodeURIComponent(`${site.address}, Chile`)}&output=embed`}
           loading="lazy"></iframe>
         <span class="badge badge--map">
-          <Icon name="map-pin" size={16} color="var(--orange-ink)" />Valdivia · Isla Teja
+          <Icon name="map-pin" size={16} color="var(--orange-ink)" />{site.address}
         </span>
       </div>
     </div>
@@ -133,8 +131,8 @@ const jsonLd = {
     <div class="cards">
       <a href={waGeneral} target="_blank" rel="noopener" class="card card--wa">
         <span class="card-label"><Icon name="whatsapp" size={28} color="var(--cream)" />WhatsApp</span>
-        <span class="card-title">Escríbenos directo</span>
-        <span class="card-text">La forma más rápida de reservar tu par.</span>
+        <span class="card-title">+56 9 3936 2967</span>
+        <span class="card-text">Escríbenos directo para reservar tu par.</span>
       </a>
       <a href={igLink} target="_blank" rel="noopener" class="card card--ig">
         <span class="card-label"><Icon name="instagram" size={26} color="var(--ink)" strokeWidth={2} />Instagram</span>

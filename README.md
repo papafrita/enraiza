@@ -38,11 +38,11 @@ Los favicons se generan desde el logo con `node scripts/favicons.mjs`.
 
 ## Pendientes con el cliente
 
-- [ ] Número real de WhatsApp (hoy es un placeholder `56900000000`).
+- [x] Número de WhatsApp actualizado.
 - [ ] Dominio definitivo (`site.url`, hoy `https://enraizazapatos.cl`).
 - [ ] Testimonios reales (los actuales son de ejemplo).
 - [ ] Fechas, duración y valor de los talleres.
-- [ ] Confirmar dirección, horarios, nombres de los fundadores y email (página Contacto).
+- [ ] Confirmar horarios, nombres de los fundadores y email (página Contacto).
 - [ ] Confirmar tabla de tallas.
 - [ ] Logo en SVG/PNG transparente (hoy se usa `mix-blend-mode: multiply` sobre PNG con fondo crema).
 - [ ] Fotos en alta resolución, sobre todo `medir-pie.png` y `taller-visita.png`.
